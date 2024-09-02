@@ -1,21 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="wrap_content"
+    android:background="@drawable/background"
+
+    tools:context=".MainActivity"
+    tools:ignore="ExtraText">
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/loginbtn"
+        android:layout_width="380dp"
+        android:layout_height="55dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="500dp"
+        android:backgroundTint="@color/black"
+        android:text="Login"
+        android:textSize="18sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/createbtn"
+        android:layout_width="380dp"
+        android:layout_height="55dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="560dp"
+        android:backgroundTint="#0087FE"
+        android:text="Create account"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="670dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="-240dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:paddingHorizontal="170dp"
+        android:paddingVertical="20dp"
+        app:srcCompat="@drawable/logo" />
 
     <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
+        android:id="@+id/travelmate"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="120dp"
+        android:gravity="center"
+        android:text="TravelMate"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold" />
 
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
