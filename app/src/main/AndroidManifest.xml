@@ -13,6 +13,18 @@
         android:theme="@style/Theme.TravelMate"
         tools:targetApi="31">
         <activity
+            android:name=".Event_Manager"
+            android:exported="false" />
+        <activity
+            android:name=".Tourist_Guider"
+            android:exported="false" />
+        <activity
+            android:name=".Tourist"
+            android:exported="false" />
+        <activity
+            android:name=".Kavindya"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
