@@ -1,5 +1,6 @@
 package com.example.travelmate;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -14,16 +15,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Find the button and blank space view by their IDs
-        //Button buttonClick = findViewById(R.id.button_click);
+        /* Find the button and blank space view by their IDs
+         Button buttonClick = findViewById(R.id.button_click);
 
 
-        /* Set an OnClickListener for the button
+        //Set an OnClickListener for the button
         buttonClick.setOnClickListener(new View.OnClickListener() {
-           /* @Override
+           @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, loggin.class);
                 startActivity(intent);
-            }*/
-        }
-    }
+            }
+        });*/
+    }}
