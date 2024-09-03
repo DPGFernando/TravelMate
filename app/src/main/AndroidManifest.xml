@@ -18,6 +18,27 @@
             android:name=".Interface"
             android:exported="false" />
         <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotActivity"
+            android:exported="false" />
+        <activity
+            android:name=".loggin"
+            android:exported="false" />
+        <activity
+            android:name=".Event_Manager"
+            android:exported="false" />
+        <activity
+            android:name=".Tourist_Guider"
+            android:exported="false" />
+        <activity
+            android:name=".Tourist"
+            android:exported="false" />
+        <activity
             android:name=".signup_eventManager"
             android:exported="false" />
         <activity
