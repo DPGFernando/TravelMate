@@ -1,14 +1,19 @@
 package com.example.travelmate;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+              
                 Intent signUpIntent = new Intent(MainActivity.this, com.example.travelmate.SignUpActivity.class);
                 startActivity(signUpIntent);
             }
@@ -44,3 +49,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 }
+
