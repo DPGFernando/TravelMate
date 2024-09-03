@@ -1,19 +1,62 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="@drawable/bg">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginLeft="140dp"
+        android:layout_marginTop="200dp"
+        android:fontFamily="@font/angkor"
+        android:text="TravelMate"
+        android:textColor="@color/black"
+        android:textColorLink="@color/black"
+        android:textSize="26sp"
+        android:textStyle="bold" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="192dp"
+        android:layout_height="176dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginLeft="110dp"
+        android:adjustViewBounds="true"
+        android:maxWidth="50dp"
+        android:maxHeight="50dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/applogo" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logoImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="320dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="#2196F3"
+        android:padding="10dp"
+        android:text="Log In"
+        android:textColor="@android:color/white"
+        android:textColorLink="#020935"
+        app:strokeColor="#3F51B5" />
+
+    <Button
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnLogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/rounded_button_blue"
+        android:backgroundTint="#3F51B5"
+        android:padding="10dp"
+        android:text="Create account"
+        android:textColor="@android:color/white"
+        android:textColorLink="#4D61D1" />
+
+</RelativeLayout>
