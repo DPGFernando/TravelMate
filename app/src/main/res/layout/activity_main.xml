@@ -2,13 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:background="@drawable/background"
 
     tools:context=".MainActivity"
     tools:ignore="ExtraText">
+  
+    <![CDATA[
+        android:layout_marginTop="50dp"/>
+]]>
 
 
     <com.google.android.material.button.MaterialButton
@@ -47,11 +50,14 @@
         android:id="@+id/travelmate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="120dp"
-        android:gravity="center"
+        android:layout_marginLeft="140dp"
+        android:layout_marginTop="200dp"
+        android:fontFamily="@font/angkor"
         android:text="TravelMate"
         android:textColor="@color/black"
-        android:textSize="25sp"
+        android:textColorLink="@color/black"
+        android:textSize="26sp"
         android:textStyle="bold" />
+    
 
 </RelativeLayout>
