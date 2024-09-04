@@ -16,6 +16,7 @@ firebaseFunctions = "21.0.0"
 firebaseAnalytics = "22.1.0"
 firebaseVertexai = "16.0.0-beta04"
 
+
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -31,6 +32,7 @@ firebase-storage = { group = "com.google.firebase", name = "firebase-storage", v
 firebase-functions = { group = "com.google.firebase", name = "firebase-functions", version.ref = "firebaseFunctions" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
 firebase-vertexai = { group = "com.google.firebase", name = "firebase-vertexai", version.ref = "firebaseVertexai" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

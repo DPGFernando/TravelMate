@@ -1,13 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg">
+    android:background="@drawable/background"
+
+    tools:context=".MainActivity"
+    tools:ignore="ExtraText">
+  
+    <![CDATA[
+        android:layout_marginTop="50dp"/>
+]]>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/loginbtn"
+        android:layout_width="380dp"
+        android:layout_height="55dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="500dp"
+        android:backgroundTint="@color/black"
+        android:text="Login"
+        android:textSize="18sp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/createbtn"
+        android:layout_width="380dp"
+        android:layout_height="55dp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="560dp"
+        android:backgroundTint="#0087FE"
+        android:text="Create account"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="670dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="-240dp"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:paddingHorizontal="170dp"
+        android:paddingVertical="20dp"
+        app:srcCompat="@drawable/logo" />
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+        android:id="@+id/travelmate"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="140dp"
         android:layout_marginTop="200dp"
@@ -17,46 +58,6 @@
         android:textColorLink="@color/black"
         android:textSize="26sp"
         android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/logoImage"
-        android:layout_width="192dp"
-        android:layout_height="176dp"
-        android:layout_marginTop="34dp"
-        android:layout_marginLeft="110dp"
-        android:adjustViewBounds="true"
-        android:maxWidth="50dp"
-        android:maxHeight="50dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/applogo" />
-
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/logoImage"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="320dp"
-        android:background="@drawable/rounded_button"
-        android:backgroundTint="#2196F3"
-        android:padding="10dp"
-        android:text="Log In"
-        android:textColor="@android:color/white"
-        android:textColorLink="#020935"
-        app:strokeColor="#3F51B5" />
-
-    <Button
-        android:id="@+id/btnCreateAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btnLogin"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/rounded_button_blue"
-        android:backgroundTint="#3F51B5"
-        android:padding="10dp"
-        android:text="Create account"
-        android:textColor="@android:color/white"
-        android:textColorLink="#4D61D1" />
+    
 
 </RelativeLayout>
