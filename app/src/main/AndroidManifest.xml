@@ -59,7 +59,13 @@
             android:name=".signup_eventManager"
             android:exported="false" />
         <activity
+            android:name=".signUp_tourist"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".signup_tourist"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -11,10 +11,11 @@ firebaseDatabase = "21.0.0"
 googleGmsGoogleServices = "4.4.2"
 firebaseAuth = "23.0.0"
 firebaseFirestore = "25.1.0"
-firebaseStorage = "21.0.0"
+firebaseStorage = "23.0.0"
 firebaseFunctions = "21.0.0"
 firebaseAnalytics = "22.1.0"
 firebaseVertexai = "16.0.0-beta04"
+
 
 
 [libraries]
@@ -32,6 +33,7 @@ firebase-storage = { group = "com.google.firebase", name = "firebase-storage", v
 firebase-functions = { group = "com.google.firebase", name = "firebase-functions", version.ref = "firebaseFunctions" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
 firebase-vertexai = { group = "com.google.firebase", name = "firebase-vertexai", version.ref = "firebaseVertexai" }
+
 
 
 [plugins]

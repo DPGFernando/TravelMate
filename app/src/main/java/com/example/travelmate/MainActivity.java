@@ -2,6 +2,8 @@ package com.example.travelmate;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
 import android.view.View;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView logoImageView;
     private TextView travelMateTextView;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent signUpIntent = new Intent(MainActivity.this, com.example.travelmate.SignUpActivity.class);
                 startActivity(signUpIntent);
             }
+
         });
 
     }

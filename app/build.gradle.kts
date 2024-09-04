@@ -41,8 +41,8 @@ dependencies {
     implementation(libs.constraintlayout)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
-    implementation(libs.firebase.storage)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.storage)
     implementation(libs.firebase.functions)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
@@ -51,5 +51,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-database:21.0.0")
     implementation ("com.google.firebase:firebase-auth:23.0.0")
+
 
 }
