@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    android:fillViewport="true"
+    tools:layout_editor_absoluteX="1dp"
+    tools:layout_editor_absoluteY="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".signup_eventManager">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="62dp"
+            android:layout_height="63dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.985"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/applogo" />
+
+        <view
+            android:id="@+id/view"
+            class="androidx.cardview.widget.CardView"
+            android:layout_width="328dp"
+            android:layout_height="1148dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/view"
+                app:layout_constraintEnd_toEndOf="@+id/view"
+                app:layout_constraintStart_toStartOf="@+id/view"
+                app:layout_constraintTop_toTopOf="@+id/view">
+
+        <TextView
+
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="66dp"
+            android:layout_marginStart="32dp"
+            android:gravity="center"
+            android:text="Sing Up"
+            android:textColor="@color/black"
+
+            android:textSize="35dp"
+            android:textStyle="bold"
+/>
+
+
+        <EditText
+            android:id="@+id/First_Name"
+            android:layout_width="375dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="5dp"
+            android:hint="First Name"
+            android:textColorHint="#000000"
+            android:textColorLink="#0D0D0D"
+/>
+
+        <EditText
+            android:id="@+id/Last_Name"
+            android:layout_width="375dp"
+            android:layout_height="48dp"
+            android:hint="Last Name"
+            android:textColorHint="#000000"
+         />
+
+        <EditText
+            android:id="@+id/Email"
+            android:layout_width="375dp"
+            android:layout_height="48dp"
+            android:hint="Email"
+            android:textColorHint="#000000"
+ />
+
+        <EditText
+            android:id="@+id/Password"
+            android:layout_width="375dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="5dp"
+            android:hint="Password"
+            android:textColorHint="#000000"
+/>
+
+        <EditText
+            android:id="@+id/Re_Password"
+            android:layout_width="375dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="156dp"
+            android:hint="Re-Enter Password"
+            android:textColorHint="#000000"
+ />
+
+
+        <EditText
+            android:id="@+id/Mobile_Num"
+            android:layout_width="375dp"
+            android:layout_height="45dp"
+            android:layout_marginBottom="232dp"
+            android:hint="Mobile Number"
+            android:textColorHint="#000000"
+ />
+
+
+        <EditText
+            android:id="@+id/Passport_ID"
+            android:layout_width="375dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="176dp"
+            android:hint="Passport ID"
+            android:textColorHint="#000000"
+/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/SingUpB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login"
+
+
+
+
+            />
+
+
+        <Button
+            android:id="@+id/changeProfileButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Profile Image"
+            tools:layout_editor_absoluteX="107dp"
+            tools:layout_editor_absoluteY="635dp" />
+
+
+        <ImageView
+            android:id="@+id/profileImage"
+            android:layout_width="85dp"
+            android:layout_height="76dp"
+
+            tools:srcCompat="@tools:sample/avatars" />
+
+
+
+
+            </LinearLayout>
+
+        </view>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
