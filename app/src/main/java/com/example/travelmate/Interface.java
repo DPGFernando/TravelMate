@@ -31,8 +31,8 @@ public class Interface extends AppCompatActivity {
         FirebaseUser user = fAuth.getCurrentUser();
         if(!user.isEmailVerified()){
             Toast.makeText(Interface.this, "Email is not verified", Toast.LENGTH_SHORT).show();
-            /*Intent i = new Intent(this, signup_eventManager.class);
-            startActivity(i);*/
+            Intent i = new Intent(this, loggin.class);
+            startActivity(i);
         }
 
         logOutBtn = findViewById(R.id.logOut);
@@ -46,7 +46,7 @@ public class Interface extends AppCompatActivity {
 
     public void logout(View view) {
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), signup_eventManager.class));
+        startActivity(new Intent(getApplicationContext(), loggin.class));
         finish();
     }
 }

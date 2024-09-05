@@ -9,16 +9,13 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-public class Kavindya extends AppCompatActivity {
+public class signUpPage extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_kavindya);
+        setContentView(R.layout.activity_sign_up_page);
         TextView textView = findViewById(R.id.textView2);
 
         TextView textView1 = findViewById(R.id.textView);
@@ -27,7 +24,7 @@ public class Kavindya extends AppCompatActivity {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Kavindya.this,Tourist.class);
+                Intent intent = new Intent(signUpPage.this,signUp_tourist.class);
                 startActivity(intent);
             }
         });
@@ -36,7 +33,7 @@ public class Kavindya extends AppCompatActivity {
         b2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Kavindya.this,Tourist_Guider.class);
+                Intent intent = new Intent(signUpPage.this, TGSignUpActivity.class);
                 startActivity(intent);
             }
         });
@@ -45,7 +42,7 @@ public class Kavindya extends AppCompatActivity {
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Kavindya.this, Event_Manager.class);
+                Intent intent = new Intent(signUpPage.this, signup_eventManager.class);
                 startActivity(intent);
             }
         });

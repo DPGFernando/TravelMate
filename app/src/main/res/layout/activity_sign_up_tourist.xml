@@ -13,7 +13,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".signup_eventManager">
+        tools:context=".signUp_tourist">
 
         <ImageView
             android:id="@+id/imageView"
@@ -30,7 +30,7 @@
             android:id="@+id/view"
             class="androidx.cardview.widget.CardView"
             android:layout_width="328dp"
-            android:layout_height="1148dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="100dp"
             android:layout_marginEnd="32dp"
@@ -52,116 +52,145 @@
                 app:layout_constraintStart_toStartOf="@+id/view"
                 app:layout_constraintTop_toTopOf="@+id/view">
 
-        <TextView
 
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="66dp"
-            android:layout_marginStart="32dp"
-            android:gravity="center"
-            android:text="Sing Up"
-            android:textColor="@color/black"
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="8dp"
+                    android:text="Sign Up"
+                    android:textColor="@color/black"
+                    android:textSize="28sp" />
 
-            android:textSize="35dp"
-            android:textStyle="bold"
-/>
+                <EditText
+                    android:id="@+id/First_Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/inter"
+                    android:hint="First Name"
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:textSize="16sp"  />
 
+                <EditText
+                    android:id="@+id/Last_Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/inter"
+                    android:hint="Last Name"
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/First_Name"
-            android:layout_width="375dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="5dp"
-            android:hint="First Name"
-            android:textColorHint="#000000"
-            android:textColorLink="#0D0D0D"
-/>
+                <EditText
+                    android:id="@+id/Email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/inter"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:padding="8dp"
+                    android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/Last_Name"
-            android:layout_width="375dp"
-            android:layout_height="48dp"
-            android:hint="Last Name"
-            android:textColorHint="#000000"
-         />
+                <EditText
+                    android:id="@+id/Password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/inter"
+                    android:hint="Password"
+                    android:tooltipText="At least 8 characters"
+                    android:inputType="textPassword"
+                    android:padding="8dp"
+                    android:textSize="16sp"  />
 
-        <EditText
-            android:id="@+id/Email"
-            android:layout_width="375dp"
-            android:layout_height="48dp"
-            android:hint="Email"
-            android:textColorHint="#000000"
- />
-
-        <EditText
-            android:id="@+id/Password"
-            android:layout_width="375dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="5dp"
-            android:hint="Password"
-            android:textColorHint="#000000"
-/>
-
-        <EditText
-            android:id="@+id/Re_Password"
-            android:layout_width="375dp"
-            android:layout_height="45dp"
-            android:layout_marginBottom="156dp"
-            android:hint="Re-Enter Password"
-            android:textColorHint="#000000"
- />
-
-
-        <EditText
-            android:id="@+id/Mobile_Num"
-            android:layout_width="375dp"
-            android:layout_height="45dp"
-            android:layout_marginBottom="232dp"
-            android:hint="Mobile Number"
-            android:textColorHint="#000000"
- />
-
-
-        <EditText
-            android:id="@+id/Passport_ID"
-            android:layout_width="375dp"
-            android:layout_height="48dp"
-            android:layout_marginBottom="176dp"
-            android:hint="Passport ID"
-            android:textColorHint="#000000"
-/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/SingUpB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Login"
+                <EditText
+                    android:id="@+id/Re_Password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/inter"
+                    android:hint="Retype Password"
+                    android:inputType="textPassword"
+                    android:padding="8dp"
+                    android:textSize="16sp" />
 
 
+                <EditText
+                    android:id="@+id/Mobile_Num"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:hint="Phone Number"
+                    android:tooltipText="Enter with country code"
+                    android:inputType="number"
+                    android:padding="8dp"
+                    android:textSize="16sp" />
 
 
-            />
+                <EditText
+                    android:id="@+id/Passport_ID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/inter"
+                    android:hint="Passport ID"
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:textSize="16sp" />
 
 
-        <Button
-            android:id="@+id/changeProfileButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Change Profile Image"
-            tools:layout_editor_absoluteX="107dp"
-            tools:layout_editor_absoluteY="635dp" />
+                <TextView
+                    android:id="@+id/uploadImageText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="8dp"
+                    android:text="Upload Profile Photo"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/img" />
 
 
-        <ImageView
-            android:id="@+id/profileImage"
-            android:layout_width="85dp"
-            android:layout_height="76dp"
+                <Button
+                    android:id="@+id/signUpBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/custom_btn"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:text="Create Account"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
-            tools:srcCompat="@tools:sample/avatars" />
-
-
-
-
+                <ProgressBar
+                    android:id="@+id/progressBar1"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible" />
             </LinearLayout>
 
         </view>

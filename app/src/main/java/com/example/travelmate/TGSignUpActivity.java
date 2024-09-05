@@ -1,157 +1,268 @@
 package com.example.travelmate;
 
-import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class TGSignUpActivity extends AppCompatActivity {
 
-    private EditText firstName, lastName, email, password, retypePassword, mobileNo, nicNo;
-    private Button uploadProfilePhoto, createAccountButton, nextButton;
-    private static final int PICK_IMAGE_REQUEST = 1;
-    private static final int REQUEST_READ_EXTERNAL_STORAGE = 100;
-    private Uri imageUri;
-    private ImageView profileImageView;
-    private ProgressBar progressBar;
-
-    private FirebaseAuth mAuth;
-
+    ImageView app_logo,profilePhoto,idFrontimg;
+    TextView signUp,uploadImageText,uploadNic,front;
+    EditText firstName,lastName,userEmail,userPassword,retypePassword,mobileNo,nicNo;
+    Button createBtn;
+    ProgressBar progressBar;
+    FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
+    StorageReference storageReference;
+    String userID;
+    Uri profileimg,  idFront;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_tg_sign_up);
 
-        // Initialize Firebase Auth and Database
-        mAuth = FirebaseAuth.getInstance();
-
-
-        // Initialize UI elements
+        app_logo = findViewById(R.id.imageView);
+        profilePhoto = findViewById(R.id.profilePhoto);
+        idFrontimg = findViewById(R.id.idFront);
+        signUp = findViewById(R.id.signUp);
+        uploadImageText = findViewById(R.id.uploadImageText);
+        uploadNic = findViewById(R.id.uploadNic);
+        front = findViewById(R.id.front);
         firstName = findViewById(R.id.firstName);
         lastName = findViewById(R.id.lastName);
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
+        userEmail = findViewById(R.id.userEmail);
+        userPassword = findViewById(R.id.userPassword);
         retypePassword = findViewById(R.id.retypePassword);
         mobileNo = findViewById(R.id.mobileNo);
         nicNo = findViewById(R.id.nicNo);
-        uploadProfilePhoto = findViewById(R.id.uploadProfilePhoto);
-        profileImageView = findViewById(R.id.profileImageView);
+        createBtn = findViewById(R.id.createBtn);
         progressBar = findViewById(R.id.progressBar);
-        nextButton = findViewById(R.id.nextButton);
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        storageReference = FirebaseStorage.getInstance().getReference();
 
-        // Set OnClickListener for uploading profile photo
-        uploadProfilePhoto.setOnClickListener(v -> requestStoragePermission());
+        if(fAuth.getCurrentUser() != null){
+            startActivity(new Intent(getApplicationContext(), Interface.class));
+            finish();
+        }
 
-        // Set OnClickListener for next button
-        nextButton.setOnClickListener(v -> {
-            if (validateFields()) {
-                Intent intent = new Intent(TGSignUpActivity.this, UploadLicenseActivity.class);
-                intent.putExtra("firstName", firstName.getText().toString().trim());
-                intent.putExtra("lastName", lastName.getText().toString().trim());
-                intent.putExtra("email", email.getText().toString().trim());
-                intent.putExtra("password", password.getText().toString().trim());
-                intent.putExtra("mobileNo", mobileNo.getText().toString().trim());
-                intent.putExtra("nicNo", nicNo.getText().toString().trim());
-                intent.putExtra("profileImageUri", imageUri.toString()); // Pass profile image URI
-                startActivity(intent);
-            } else {
-                Toast.makeText(TGSignUpActivity.this, "Please fill out all fields correctly", Toast.LENGTH_SHORT).show();
+        createBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String fName = firstName.getText().toString();
+                String lName = lastName.getText().toString();
+                String uEmail = userEmail.getText().toString().trim();
+                String uPass = userPassword.getText().toString().trim();
+                String uRetypePass = retypePassword.getText().toString();
+                String uPhone = mobileNo.getText().toString();
+                String uNicNo = nicNo.getText().toString();
+
+                if(fName.isEmpty()){
+                    firstName.setError("FirstName is required");
+                    return;
+                }
+
+                if(lName.isEmpty()){
+                    lastName.setError("LastName is required");
+                    return;
+                }
+
+                if(uEmail.isEmpty()){
+                    userEmail.setError("Email is required");
+                    return;
+                }
+
+                if(uPass.isEmpty()){
+                    userPassword.setError("Password is required");
+                    return;
+                }
+
+                if(uPass.length()<8){
+                    userPassword.setError("At least 8 characters");
+                    return;
+                }
+
+                if(!uRetypePass.equals(uPass)){
+                    retypePassword.setError("Password doesn't match");
+                    return;
+                }
+
+                if(uPhone.isEmpty()){
+                    mobileNo.setError("Mobile is required");
+                    return;
+                }
+
+                if(uPhone.length() != 10){
+                    mobileNo.setError("Enter Valid Telephone number");
+                }
+
+                if(uNicNo.isEmpty()) {
+                    nicNo.setError("NIC number is required");
+                    return;
+                }
+
+                progressBar.setVisibility(View.VISIBLE);
+
+                Task<AuthResult> authResultTask = fAuth.createUserWithEmailAndPassword(uEmail, uPass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            FirebaseUser fuser = fAuth.getCurrentUser();
+
+                            fuser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Toast.makeText(TGSignUpActivity.this, "Verification Email was Sent", Toast.LENGTH_SHORT).show();
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.v("TAG", "Some error is occurred"+ e.toString());
+                                }
+                            });
+
+                            userID = fAuth.getCurrentUser().getUid();
+                            uploadImages(profileimg, idFront, userID);
+
+                            DocumentReference documentReference = fStore.collection("TouristGuide").document(userID);
+                            Map<String, Object> user = new HashMap<>();
+                            user.put("firstName", fName);
+                            user.put("lastName", lName);
+                            user.put("email", uEmail);
+                            user.put("phoneNumber", uPhone);
+                            user.put("NIC No", uNicNo);
+                            user.put("profileimg", profileimg);
+                            user.put("idFront", idFront);
+
+                            Toast.makeText(TGSignUpActivity.this, "Data Entered", Toast.LENGTH_SHORT).show();
+
+                            documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    Log.v("TAG", "onSuccess: User profile is created for" + userID);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.v("TAG", "Failed" + e.toString());
+                                }
+                            });
+
+                            startActivity(new Intent(getApplicationContext(), Interface.class));
+
+                        }else{
+                            Toast.makeText(TGSignUpActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
         });
-    }
 
-    private void requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_READ_EXTERNAL_STORAGE);
-        } else {
-            openFileChooser();
-        }
-    }
+        profilePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGallery, 1000);
+            }
+        });
 
-    private void openFileChooser() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
+        idFrontimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openGallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGallery, 1001);
+            }
+        });
+
+
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-            profileImageView.setImageURI(imageUri);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_READ_EXTERNAL_STORAGE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openFileChooser();
-            } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
+        if(requestCode == 1000){
+            if(resultCode == Activity.RESULT_OK){
+                profileimg = data.getData();
+                profilePhoto.setImageURI(profileimg);
+            }
+        } else if (requestCode == 1001) {
+            if(resultCode == Activity.RESULT_OK){
+                idFront = data.getData();
+                idFrontimg.setImageURI(idFront);
             }
         }
+
     }
 
-    private boolean validateFields() {
-        if (firstName.getText().toString().trim().isEmpty()) {
-            firstName.setError("First name is required");
-            return false;
-        }
 
-        if (lastName.getText().toString().trim().isEmpty()) {
-            lastName.setError("Last name is required");
-            return false;
-        }
+    private void uploadImages(Uri profileimg, Uri idFrontImg, String userID) {
 
-        if (email.getText().toString().trim().isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email.getText().toString()).matches()) {
-            email.setError("Valid email is required");
-            return false;
-        }
+        StorageReference profileRef = storageReference.child("TouristGuide/" + userID +"/profile.jpg");
+        profileRef.putFile(profileimg).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.v("TAG", "Profile Image uploaded successfully");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(TGSignUpActivity.this, "Error" + e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        if (password.getText().toString().trim().isEmpty() || password.getText().toString().length() < 6) {
-            password.setError("Password must be at least 6 characters");
-            return false;
-        }
+        StorageReference nicBackRef = storageReference.child("TouristGuide/" + userID + "/ID.jpg");
+        nicBackRef.putFile(idFrontImg).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Log.v("TAG", "id Image uploaded successfully");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(TGSignUpActivity.this, "Error" + e.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
-        if (!password.getText().toString().equals(retypePassword.getText().toString().trim())) {
-            retypePassword.setError("Passwords do not match");
-            return false;
-        }
-
-        if (mobileNo.getText().toString().trim().isEmpty() || mobileNo.getText().toString().length() != 10) {
-            mobileNo.setError("Valid mobile number is required");
-            return false;
-        }
-
-        if (nicNo.getText().toString().trim().isEmpty()) {
-            nicNo.setError("NIC number is required");
-            return false;
-        }
-
-        return true;
     }
 }

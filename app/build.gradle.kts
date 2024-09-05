@@ -1,12 +1,11 @@
 plugins {
-
-    id("com.android.application")
+    alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
 }
 
 android {
     namespace = "com.example.travelmate"
-    compileSdk = 35
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.example.travelmate"
@@ -43,14 +42,10 @@ dependencies {
     implementation(libs.firebase.database)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
-    implementation(libs.firebase.functions)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-    implementation(platform("com.google.firebase:firebase-bom:33.2.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-database:21.0.0")
-    implementation ("com.google.firebase:firebase-auth:23.0.0")
-
 
 }

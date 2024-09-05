@@ -9,10 +9,7 @@
 
     tools:context=".MainActivity"
     tools:ignore="ExtraText">
-  
-    <![CDATA[
-        android:layout_marginTop="50dp"/>
-]]>
+
 
 
     <com.google.android.material.button.MaterialButton
@@ -23,6 +20,8 @@
         android:layout_marginTop="500dp"
         android:backgroundTint="@color/black"
         android:text="Login"
+        app:cornerRadius="100dp"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
     <com.google.android.material.button.MaterialButton
@@ -32,7 +31,9 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="560dp"
         android:backgroundTint="#0087FE"
+        app:cornerRadius="100dp"
         android:text="Create account"
+        android:textColor="@color/white"
         android:textSize="18sp" />
 
     <ImageView
