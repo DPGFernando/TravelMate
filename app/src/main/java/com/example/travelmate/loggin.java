@@ -1,5 +1,6 @@
 package com.example.travelmate;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,13 +11,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-
 
 
 public class loggin extends AppCompatActivity {
@@ -32,8 +37,6 @@ public class loggin extends AppCompatActivity {
     private TextView signUpTextView;
     private TextView clearText;
     FirebaseAuth fAuth;
-
-
 
 
     @Override
@@ -54,15 +57,11 @@ public class loggin extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
 
 
-
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 handleLogin();
             }
-
-
-
 
 
         });
@@ -71,18 +70,46 @@ public class loggin extends AppCompatActivity {
         forgotPasswordTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(loggin.this, ForgotActivity.class);
-                startActivity(intent);
-                handleForgotPassword();
+                EditText resetMail = new EditText(view.getContext());
+                AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(view.getContext());
+                passwordResetDialog.setTitle("Password Reset");
+                passwordResetDialog.setMessage("Enter your email");
+                passwordResetDialog.setView(resetMail);
+
+                passwordResetDialog.setPositiveButton("yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String mail = resetMail.getText().toString();
+                        fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(loggin.this, "Reset link was sent", Toast.LENGTH_SHORT).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(loggin.this, "Reset Link was not sent" + e.toString(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                });
+
+                passwordResetDialog.setNegativeButton("no", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+
+                passwordResetDialog.create().show();
             }
         });
 
 
         signUpTextView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(loggin.this, SignupActivity.class);
+            public void onClick(View view) {
+                Intent intent = new Intent(loggin.this, signUpPage.class);
                 startActivity(intent);
                 handleSignUp();
             }
@@ -92,45 +119,38 @@ public class loggin extends AppCompatActivity {
 
     private void handleLogin() {
 
-     String username = usernameEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
+        String username = usernameEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
 
 
-                if (TextUtils.isEmpty(username)) {
-                    usernameEditText.setError("Please enter username or email");
-                    return;
-                }
-
-                if (TextUtils.isEmpty(password)) {
-                    passwordEditText.setError("Please enter password");
-                    return;
-                }
-
-
-                fAuth.signInWithEmailAndPassword(username,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(loggin.this, "Logged in successfully ", Toast.LENGTH_SHORT).show();
-
-
-                            Intent intent = new Intent(loggin.this, LoginActivity.class);
-                            startActivity(intent);
-                             } else {
-                            Toast.makeText(loggin.this, "Error ", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-
-
-
-
-
-
-
-
+        if (TextUtils.isEmpty(username)) {
+            usernameEditText.setError("Please enter username or email");
+            return;
         }
 
+        if (TextUtils.isEmpty(password)) {
+            passwordEditText.setError("Please enter password");
+            return;
+        }
+
+
+        fAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(loggin.this, "Logged in successfully ", Toast.LENGTH_SHORT).show();
+
+
+                    Intent intent = new Intent(loggin.this, Interface.class);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(loggin.this, "Email or password is wrong", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+
+    }
 
 
     private void handleForgotPassword() {

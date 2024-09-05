@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#B5E7FD"
+    android:background="@drawable/background_gradient"
     tools:visibility="visible">
 
 
@@ -79,7 +79,7 @@
 
     <Button
         android:id="@+id/login_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/remember_me"
         android:layout_centerHorizontal="true"
@@ -87,7 +87,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
 
-        android:backgroundTint="#0288D1"
+        android:background="@drawable/custom_btn"
         android:text="Login"
         android:textColor="#FFFFFF" />
 
