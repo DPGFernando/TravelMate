@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -87,6 +88,7 @@ public class TGSignUpActivity extends AppCompatActivity {
             if (validateFields()) {
                 progressBar.setVisibility(View.VISIBLE);
                 uploadImagesAndCreateUser();
+                startActivity(new Intent(getApplicationContext(), Interface.class));
             } else {
                 Toast.makeText(TGSignUpActivity.this, "Please fill out all fields correctly", Toast.LENGTH_SHORT).show();
             }
@@ -94,13 +96,22 @@ public class TGSignUpActivity extends AppCompatActivity {
     }
 
     private void requestStoragePermission(int requestCode) {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                    REQUEST_READ_EXTERNAL_STORAGE);
-        } else {
-            openFileChooser(requestCode);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // For Android 13+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted; request it
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_MEDIA_IMAGES}, REQUEST_READ_EXTERNAL_STORAGE);
+            } else {
+                // Permission already granted, proceed with file chooser
+                openFileChooser(requestCode);
+            }
+        } else { // For Android versions below 13
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                // Permission is not granted; request it
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
+            } else {
+                // Permission already granted, proceed with file chooser
+                openFileChooser(requestCode);
+            }
         }
     }
 

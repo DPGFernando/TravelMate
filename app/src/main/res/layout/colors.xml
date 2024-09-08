@@ -1,8 +1,0 @@
-<resources xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    tools:ignore="WrongFolder">
-    <color android:name="light_blue"
-        tools:ignore="ExtraText">#ADD8E6</color>
-    <color android:name="blue">#4A90E2</color>
-    <color android:name="dark_blue">#3A7DC6</color>
-</resources>
