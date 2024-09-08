@@ -46,7 +46,7 @@
         android:gravity="center"
         android:paddingHorizontal="170dp"
         android:paddingVertical="20dp"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/applogo" />
 
     <TextView
         android:id="@+id/travelmate"
