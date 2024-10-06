@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.travelmate">
 
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -18,8 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TravelMate"
         tools:targetApi="31">
-
-
+        <activity
+            android:name=".TouristGuideProfile"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
         <activity
             android:name=".TGSignUpActivity"
             android:exported="false" />
@@ -39,7 +42,7 @@
             android:name=".signUp_tourist"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".touristGuideMain"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
