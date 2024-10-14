@@ -1,14 +1,175 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".TAddFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="add fragment" />
+    android:background="@drawable/background_gradient"
+    android:paddingBottom="80dp"
+    android:fillViewport="true">
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintVertical_bias="0.5">
+
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="62dp"
+            android:layout_height="63dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.985"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/applogo" />
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="50dp"
+            app:cardCornerRadius="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:gravity="center"
+                    android:text="Add Packages"
+                    android:textColor="@color/black"
+                    android:textSize="35sp"
+                    android:textStyle="bold" />
+
+
+
+                <EditText
+                    android:id="@+id/packName"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="5dp"
+                    android:hint="Package Name"
+                    android:textColorHint="#000000"
+                    android:textColorLink="#0D0D0D" />
+
+
+                <EditText
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:hint="Description"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:textColorHint="#000000" />
+
+
+                <EditText
+                    android:id="@+id/price"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:hint="Price"
+                    android:inputType="numberDecimal"
+                    android:textColorHint="#000000" />
+
+
+                <EditText
+                    android:id="@+id/nodays"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="5dp"
+                    android:hint="No of Days"
+                    android:inputType="number"
+                    android:textColorHint="#000000" />
+
+
+                <TextView
+                    android:id="@+id/uploadImageText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="8dp"
+                    android:text="Upload Photo"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+
+                <ImageView
+                    android:id="@+id/uploadPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_marginBottom="10dp"
+                    app:srcCompat="@drawable/img" />
+
+
+                <TextView
+                    android:id="@+id/fileNameTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="No file selected"
+                    android:textColor="@android:color/darker_gray"
+                    android:gravity="center"
+                    android:layout_marginBottom="8dp" />
+
+
+                <Button
+                    android:id="@+id/removeFileButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Remove File"
+                    android:visibility="gone"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="16dp" />
+
+
+                <Button
+                    android:id="@+id/AddPackButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:gravity="center"
+                    android:background="@drawable/rounded_button"
+                    android:backgroundTint="#2196F3"
+                    android:padding="12dp"
+                    android:text="Add Package" />
+
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </FrameLayout>
