@@ -1,10 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#B8E8F7"
     tools:context=".TouristGuideProfile">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="130dp"
+        android:layout_height="136dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="115dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="39dp"
+        android:layout_marginEnd="127dp"
+        android:contentDescription="Profile Image"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="242dp"
+        android:layout_height="28dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="184dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="513dp"
+        android:gravity="center"
+        android:text="FirstName LastName"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="125dp"
+        android:layout_marginBottom="496dp"
+        android:text="username@gmail.com"
+        android:textSize="14dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+    <LinearLayout
+
+        android:id="@+id/rectangle_5"
+        android:layout_width="303dp"
+        android:layout_height="142dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="244dp"
+        android:background="@drawable/img_1"
+        android:orientation="horizontal"
+
+
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/frame_12"
+        android:layout_width="175dp"
+        android:layout_height="43dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="122dp"
+        android:layout_marginTop="370dp"
+        android:layout_gravity="center"
+        android:paddingEnd="20dp"
+        android:text="Save Changes"
+        android:backgroundTint="#0077B6"/>
+
+
+    <TextView
+        android:id="@+id/email_usern"
+        android:layout_width="195dp"
+        android:layout_height="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="294dp"
+        android:text="Email: username@gmail.com"
+
+        android:gravity="top"
+        />
+    <TextView
+        android:id="@+id/username"
+        android:layout_width="188dp"
+        android:layout_height="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="270dp"
+        android:text="Username: FirstName LastName"
+
+        android:gravity="top"
+        />
+
+    <TextView
+        android:id="@+id/password_"
+        android:layout_width="138dp"
+        android:layout_height="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="318dp"
+        android:text="Password: **********"
+
+        android:gravity="top"
+        />
+
+    <TextView
+        android:id="@+id/contact_947"
+        android:layout_width="151dp"
+        android:layout_height="15dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="70dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="342dp"
+        android:text="Contact: +94717601394"
+
+        android:gravity="top"
+        />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pen"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="314dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="255dp"
+        android:clipToOutline="true"
+        android:background="@drawable/img_2"
+
+
+        />
+</RelativeLayout>
+
+
