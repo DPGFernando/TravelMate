@@ -75,10 +75,11 @@ public class TAddFragment extends Fragment {
         fAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        if (fAuth.getCurrentUser() != null) {
-            startActivity(new Intent(getContext(), Interface.class));
+
+        /*if (fAuth.getCurrentUser() != null) {
+            startActivity(new Intent(getContext(), touristGuideMain.class));
             getActivity().finish();
-        }
+        }*/
 
         description.addTextChangedListener(new TextWatcher() {
             @Override
@@ -164,7 +165,8 @@ public class TAddFragment extends Fragment {
         userId = fAuth.getCurrentUser().getUid();
         uploadImages(photoimg, userId);
 
-        DocumentReference documentReference = fStore.collection("packages").document(userId);
+        DocumentReference documentReference = fStore.collection("TouristGuide").document(userId);
+        DocumentReference documentReference1 = documentReference.collection("Packages").document();
         Map<String, Object> packagedata = new HashMap<>();
         packagedata.put("packName", pName);
         packagedata.put("description", des);
@@ -172,7 +174,7 @@ public class TAddFragment extends Fragment {
         packagedata.put("nodays", nDays);
         packagedata.put("photoimg", photoimg.toString());
 
-        documentReference.set(packagedata).addOnSuccessListener(new OnSuccessListener<Void>() {
+        documentReference1.set(packagedata).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Log.v("TAG", "onSuccess: Package created for " + userId);
