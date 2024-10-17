@@ -1,38 +1,49 @@
 package com.example.travelmate;
 
-import android.annotation.SuppressLint;
+
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.database.DataSnapshot;
-import java.text.BreakIterator;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 
 public class TouristGuideProfile extends AppCompatActivity {
 
-    private TextView tvName, tvEmail, tvPassword, tvContact;
+    private TextView tvName, tvEmail, tvContact, username, uemail ;
     private EditText etName, etEmail, etPassword, etContact;
-    private MaterialButton btnEdit, btnSave;
+    private ImageView image;
+    private MaterialButton btnEdit, logOutbtn;
 
-    // Firebase Database reference
-    private DatabaseReference databaseReference;
 
-    private String userId = "yourUserId";
+    FirebaseAuth fAuth;
+    FirebaseFirestore fStore;
+    String userID;
+    StorageReference firebaseStorage;
+    Uri imageUri;
+    DocumentReference documentReference;
+    StorageReference fileRef;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,86 +52,78 @@ public class TouristGuideProfile extends AppCompatActivity {
 
         tvName = findViewById(R.id.tv_name);
         tvEmail = findViewById(R.id.tv_email);
-        tvPassword = findViewById(R.id.password_);
+        username = findViewById(R.id.username);
+        uemail = findViewById(R.id.email_usern);
         tvContact = findViewById(R.id.contact_947);
-
-        etName = new EditText(this);
-        etEmail = new EditText(this);
-        etPassword = new EditText(this);
-        etContact = new EditText(this);
+        image = findViewById(R.id.image);
 
         btnEdit = findViewById(R.id.pen);
-        btnSave = findViewById(R.id.frame_12);
+        logOutbtn = findViewById(R.id.logOut);
 
-        try {
-            FirebaseDatabase.getInstance("Users").wait(Long.parseLong(userId));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+
+        userID = fAuth.getCurrentUser().getUid();
+        firebaseStorage = FirebaseStorage.getInstance().getReference();
+        fileRef = firebaseStorage.child("TouristGuide/" + userID +"/profilePicture.jpg");
+        documentReference = fStore.collection("TouristGuide").document(userID);
 
         loadUserData();
 
-        btnEdit.setOnClickListener(new View.OnClickListener() {
 
-
-
+        logOutbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                enableEditing();
-            }
-
-            private void enableEditing() {
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getApplicationContext(), loggin.class));
+                finish();
             }
         });
 
-
-        btnSave.setOnClickListener(new View.OnClickListener() {
+        btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saveChanges();
-            }
-
-            private void saveChanges() {
+                Intent intent = new Intent(TouristGuideProfile.this, editTouristGuide.class);
+                startActivity(intent);
             }
         });
     }
 
     private void loadUserData() {
-        ValueEventListener valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    String name = snapshot.child("username").getValue(String.class);
-                    String email = snapshot.child("email").getValue(String.class);
-                    String password = snapshot.child("password").getValue(String.class);
-                    String contact = snapshot.child("contact").getValue(String.class);
+            documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
+
+                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                    String name = value.getString("firstName") + " " + value.getString("lastName");
+                    String email = value.getString("email");
+                    String contact = value.getString("mobileNo");
 
 
                     tvName.setText(name);
                     tvEmail.setText(email);
-                    tvPassword.setText(password);
+                    username.setText("Username: " + name);
+                    uemail.setText("Email: " + email);
+                    tvContact.setText("Contact: " + contact);
 
 
                 }
 
-            }
+            });
 
+        fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(image);
             }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                image.setImageResource(R.drawable.img_3);
+            }
+        });
 
-
-        }
-
-
-}
-
-    private class OnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-
-        }
     }
+
+
 
 
 }
