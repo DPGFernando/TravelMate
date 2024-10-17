@@ -18,6 +18,9 @@
         android:theme="@style/Theme.TravelMate"
         tools:targetApi="31">
         <activity
+            android:name=".editTouristGuide"
+            android:exported="false" />
+        <activity
             android:name=".TouristGuideProfile"
             android:exported="false" />
         <activity
