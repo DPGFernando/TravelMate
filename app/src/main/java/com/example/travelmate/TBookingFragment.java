@@ -1,21 +1,165 @@
 package com.example.travelmate;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class TBookingFragment extends Fragment {
 
+    private FirebaseFirestore db;
+    private List<Booking> bookingList;
+    private BookingAdapter adapter;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_t_booking, container, false);
 
+        // Initialize Firestore and the booking list
+        db = FirebaseFirestore.getInstance();
+        bookingList = new ArrayList<>();
+
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        // Setup the adapter
+        adapter = new BookingAdapter(bookingList, position -> {
+            Booking bookingToDelete = bookingList.get(position);
+            deleteBookingFromFirestore(bookingToDelete);
+            bookingList.remove(position);
+            adapter.notifyItemRemoved(position);
+            Toast.makeText(getContext(), "Booking deleted", Toast.LENGTH_SHORT).show();
+        });
+        recyclerView.setAdapter(adapter);
+
+        // Fetch bookings from Firestore
+        fetchBookingsFromFirestore();
+
         return view;
+    }
+
+    // Fetch data from Firestore and populate the booking list
+    private void fetchBookingsFromFirestore() {
+        CollectionReference bookingsRef = db.collection("TBookings");
+
+        bookingsRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    Booking booking = document.toObject(Booking.class);
+                    bookingList.add(booking);
+                }
+                adapter.notifyDataSetChanged();
+            }
+        });
+    }
+
+    // Delete a booking from Firestore based on the name
+    private void deleteBookingFromFirestore(Booking booking) {
+        CollectionReference bookingsRef = db.collection("TBookings");
+
+        bookingsRef.whereEqualTo("name", booking.getName()).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && !task.getResult().isEmpty()) {
+                DocumentSnapshot document = task.getResult().getDocuments().get(0);
+                bookingsRef.document(document.getId()).delete();
+            }
+        });
+    }
+
+    // Booking model class
+    public static class Booking {
+        private String name;
+        private int age;
+        private String contact;
+        private String email;
+
+        public Booking() { }
+
+        public Booking(String name, int age, String contact, String email) {
+            this.name = name;
+            this.age = age;
+            this.contact = contact;
+            this.email = email;
+        }
+
+        public String getName() { return name; }
+        public int getAge() { return age; }
+        public String getContact() { return contact; }
+        public String getEmail() { return email; }
+    }
+
+    // RecyclerView Adapter class
+    public static class BookingAdapter extends RecyclerView.Adapter<BookingAdapter.BookingViewHolder> {
+
+        private List<Booking> bookingList;
+        private OnItemClickListener listener;
+
+        public interface OnItemClickListener {
+            void onDeleteClick(int position);
+        }
+
+        public BookingAdapter(List<Booking> bookingList, OnItemClickListener listener) {
+            this.bookingList = bookingList;
+            this.listener = listener;
+        }
+
+        @NonNull
+        @Override
+        public BookingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_booking_card, parent, false);
+            return new BookingViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull BookingViewHolder holder, int position) {
+            Booking booking = bookingList.get(position);
+            holder.nameTextView.setText(booking.getName());
+            holder.ageTextView.setText(String.valueOf(booking.getAge()));
+            holder.contactTextView.setText(booking.getContact());
+            holder.emailTextView.setText(booking.getEmail());
+
+            // Handle delete button click
+            holder.deleteButton.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onDeleteClick(position);
+                }
+            });
+        }
+
+        @Override
+        public int getItemCount() {
+            return bookingList.size();
+        }
+
+        // ViewHolder class for RecyclerView
+        public class BookingViewHolder extends RecyclerView.ViewHolder {
+            TextView nameTextView, ageTextView, contactTextView, emailTextView;
+            ImageView deleteButton;
+
+            public BookingViewHolder(@NonNull View itemView) {
+                super(itemView);
+                nameTextView = itemView.findViewById(R.id.text_name);
+                ageTextView = itemView.findViewById(R.id.text_age);
+                contactTextView = itemView.findViewById(R.id.text_contact);
+                emailTextView = itemView.findViewById(R.id.text_email);
+                deleteButton = itemView.findViewById(R.id.delete_button);
+            }
+        }
     }
 }

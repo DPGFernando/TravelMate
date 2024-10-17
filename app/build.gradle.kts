@@ -51,8 +51,11 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation(platform("com.google.firebase:firebase-bom:33.1.2"))
     implementation("com.google.firebase:firebase-analytics")
-    implementation("com.squareup.picasso:picasso:2.8")
     implementation("com.google.android.material:material:1.9.0")
+    implementation'com.github.bumptec.glide:glide:4.14.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+    implementation ("com.squareup.picasso:picasso:2.8")
+
 
 
 }

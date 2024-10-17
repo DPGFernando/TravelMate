@@ -5,10 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".THomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <GridView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="home fragment" />
+        android:id="@+id/gridView"
+        android:numColumns="2"
+        />
 
 </FrameLayout>

@@ -21,7 +21,13 @@
             android:name=".editpackageDetails"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".editTouristGuide"
+            android:exported="false" />
+        <activity
+            android:name=".TouristGuideProfile"
+            android:exported="false" />
+        <activity
+            android:name=".touristGuideMain"
             android:exported="false" />
         <activity
             android:name=".TouristGuideProfile"
@@ -48,7 +54,7 @@
             android:name=".signUp_tourist"
             android:exported="false" />
         <activity
-            android:name=".packageDetails"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
