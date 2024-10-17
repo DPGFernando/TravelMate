@@ -11,4 +11,5 @@
         android:id="@+id/gridView"
         android:numColumns="2"
         />
+
 </FrameLayout>

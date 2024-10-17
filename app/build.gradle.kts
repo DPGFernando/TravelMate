@@ -53,4 +53,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation'com.github.bumptec.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+    implementation ("com.squareup.picasso:picasso:2.8")
+
+
 }
