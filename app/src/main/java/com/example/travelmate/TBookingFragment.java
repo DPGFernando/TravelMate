@@ -1,5 +1,6 @@
 package com.example.travelmate;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -26,7 +29,7 @@ public class TBookingFragment extends Fragment {
     private FirebaseFirestore db;
     private List<Booking> bookingList;
     private BookingAdapter adapter;
-
+   
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -39,6 +42,8 @@ public class TBookingFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
+
         // Setup the adapter
         adapter = new BookingAdapter(bookingList, position -> {
             Booking bookingToDelete = bookingList.get(position);
@@ -49,16 +54,19 @@ public class TBookingFragment extends Fragment {
         });
         recyclerView.setAdapter(adapter);
 
-        // Fetch bookings from Firestore
+        // Fetch bookings from Firestore for the current tourist guide
         fetchBookingsFromFirestore();
 
         return view;
     }
 
-    // Fetch data from Firestore and populate the booking list
+    // Fetch data from Firestore and populate the booking list based on the tourist guide ID
     private void fetchBookingsFromFirestore() {
-        CollectionReference bookingsRef = db.collection("TBookings");
+        DocumentReference guideDocRef =  db.collection("TouristGuide").document();
 
+        CollectionReference bookingsRef = guideDocRef.collection("Bookings");
+
+        // Query to get bookings where the touristGuideId matches the current guide's ID
         bookingsRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -70,9 +78,10 @@ public class TBookingFragment extends Fragment {
         });
     }
 
-    // Delete a booking from Firestore based on the name
+    // Delete a booking from Firestore based on the booking document ID
     private void deleteBookingFromFirestore(Booking booking) {
-        CollectionReference bookingsRef = db.collection("TBookings");
+        DocumentReference guideDocRef = db.collection("TouristGuide").document();
+        CollectionReference bookingsRef = guideDocRef.collection("Bookings");
 
         bookingsRef.whereEqualTo("name", booking.getName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && !task.getResult().isEmpty()) {
@@ -82,26 +91,32 @@ public class TBookingFragment extends Fragment {
         });
     }
 
-    // Booking model class
+    // Booking model class with added touristGuideId field
     public static class Booking {
         private String name;
         private int age;
+        private String packName;
         private String contact;
         private String email;
 
+
         public Booking() { }
 
-        public Booking(String name, int age, String contact, String email) {
+        public Booking(String name, int age, String packName, String contact, String email) {
             this.name = name;
             this.age = age;
+            this.packName = packName;
             this.contact = contact;
             this.email = email;
+
         }
 
         public String getName() { return name; }
         public int getAge() { return age; }
+        public String getPackName() { return packName; }
         public String getContact() { return contact; }
         public String getEmail() { return email; }
+
     }
 
     // RecyclerView Adapter class
@@ -131,14 +146,27 @@ public class TBookingFragment extends Fragment {
             Booking booking = bookingList.get(position);
             holder.nameTextView.setText(booking.getName());
             holder.ageTextView.setText(String.valueOf(booking.getAge()));
+            holder.packNameTextView.setText(booking.getPackName());
             holder.contactTextView.setText(booking.getContact());
             holder.emailTextView.setText(booking.getEmail());
 
-            // Handle delete button click
+            // Handle delete button click with confirmation dialog
             holder.deleteButton.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onDeleteClick(position);
-                }
+                // Create an AlertDialog for confirmation
+                new AlertDialog.Builder(holder.itemView.getContext())
+                        .setTitle("Delete Booking")
+                        .setMessage("Are you sure you want to delete this booking?")
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            // Only delete if the user confirms
+                            if (listener != null) {
+                                listener.onDeleteClick(position);
+                            }
+                        })
+                        .setNegativeButton("No", (dialog, which) -> {
+                            // Do nothing, just dismiss the dialog
+                            dialog.dismiss();
+                        })
+                        .show();
             });
         }
 
@@ -149,17 +177,19 @@ public class TBookingFragment extends Fragment {
 
         // ViewHolder class for RecyclerView
         public class BookingViewHolder extends RecyclerView.ViewHolder {
-            TextView nameTextView, ageTextView, contactTextView, emailTextView;
+            TextView nameTextView, ageTextView, packNameTextView, contactTextView, emailTextView;
             ImageView deleteButton;
 
             public BookingViewHolder(@NonNull View itemView) {
                 super(itemView);
                 nameTextView = itemView.findViewById(R.id.text_name);
                 ageTextView = itemView.findViewById(R.id.text_age);
+                packNameTextView = itemView.findViewById(R.id.text_location);
                 contactTextView = itemView.findViewById(R.id.text_contact);
                 emailTextView = itemView.findViewById(R.id.text_email);
                 deleteButton = itemView.findViewById(R.id.delete_button);
             }
+
         }
     }
 }
