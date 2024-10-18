@@ -29,6 +29,7 @@ public class TBookingFragment extends Fragment {
     private FirebaseFirestore db;
     private List<Booking> bookingList;
     private BookingAdapter adapter;
+    private String userID;
    
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +39,7 @@ public class TBookingFragment extends Fragment {
         // Initialize Firestore and the booking list
         db = FirebaseFirestore.getInstance();
         bookingList = new ArrayList<>();
+        userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -62,7 +64,7 @@ public class TBookingFragment extends Fragment {
 
     // Fetch data from Firestore and populate the booking list based on the tourist guide ID
     private void fetchBookingsFromFirestore() {
-        DocumentReference guideDocRef =  db.collection("TouristGuide").document();
+        DocumentReference guideDocRef =  db.collection("TouristGuide").document(userID);
 
         CollectionReference bookingsRef = guideDocRef.collection("Bookings");
 
@@ -80,7 +82,7 @@ public class TBookingFragment extends Fragment {
 
     // Delete a booking from Firestore based on the booking document ID
     private void deleteBookingFromFirestore(Booking booking) {
-        DocumentReference guideDocRef = db.collection("TouristGuide").document();
+        DocumentReference guideDocRef = db.collection("TouristGuide").document(userID);
         CollectionReference bookingsRef = guideDocRef.collection("Bookings");
 
         bookingsRef.whereEqualTo("name", booking.getName()).get().addOnCompleteListener(task -> {
@@ -94,7 +96,7 @@ public class TBookingFragment extends Fragment {
     // Booking model class with added touristGuideId field
     public static class Booking {
         private String name;
-        private int age;
+        private String age;
         private String packName;
         private String contact;
         private String email;
@@ -102,7 +104,7 @@ public class TBookingFragment extends Fragment {
 
         public Booking() { }
 
-        public Booking(String name, int age, String packName, String contact, String email) {
+        public Booking(String name, String age, String packName, String contact, String email) {
             this.name = name;
             this.age = age;
             this.packName = packName;
@@ -112,7 +114,7 @@ public class TBookingFragment extends Fragment {
         }
 
         public String getName() { return name; }
-        public int getAge() { return age; }
+        public String getAge() { return age; }
         public String getPackName() { return packName; }
         public String getContact() { return contact; }
         public String getEmail() { return email; }
@@ -145,7 +147,7 @@ public class TBookingFragment extends Fragment {
         public void onBindViewHolder(@NonNull BookingViewHolder holder, int position) {
             Booking booking = bookingList.get(position);
             holder.nameTextView.setText(booking.getName());
-            holder.ageTextView.setText(String.valueOf(booking.getAge()));
+            holder.ageTextView.setText(String.valueOf(booking.getAge() + " years"));
             holder.packNameTextView.setText(booking.getPackName());
             holder.contactTextView.setText(booking.getContact());
             holder.emailTextView.setText(booking.getEmail());
