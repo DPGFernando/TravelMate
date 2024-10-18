@@ -36,7 +36,7 @@ public class packageDetails extends AppCompatActivity {
     StorageReference storageReference;
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
-    String userID;
+    String userID, documentID;
     Button editPackage;
 
     @Override
@@ -55,9 +55,10 @@ public class packageDetails extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         fStore = FirebaseFirestore.getInstance();
         userID = fAuth.getCurrentUser().getUid();
+        documentID = getIntent().getStringExtra("documentID");
 
-        DocumentReference documentReference = fStore.collection("TouristGuide").document("C1N5cGNvLiWSkCqkJ9qyVfVcoOi2");
-        StorageReference fileRef = storageReference.child("Packages/C1N5cGNvLiWSkCqkJ9qyVfVcoOi2/Kabaragala.jpg");
+        DocumentReference documentReference = fStore.collection("TouristGuide").document(userID);
+        StorageReference fileRef = storageReference.child("Packages/"+ userID +"/" + documentID + ".jpg");
 
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -71,14 +72,14 @@ public class packageDetails extends AppCompatActivity {
             }
         });
 
-        DocumentReference documentReference1 = documentReference.collection("packages").document("AdIAJPf4mNAuWnoFJw0f");
+        DocumentReference documentReference1 = documentReference.collection("Packages").document(documentID);
         documentReference1.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                packageTitle.setText(value.getString("packageName"));
+                packageTitle.setText(value.getString("packName"));
                 packageDes.setText(value.getString("description"));
                 packagePrice.setText(value.getString("price"));
-                packageDays.setText(value.getString("noOfDays"));
+                packageDays.setText(value.getString("nodays") + " days");
             }
         });
 
@@ -86,8 +87,8 @@ public class packageDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(packageDetails.this, editpackageDetails.class);
-                intent.putExtra("packageID", "AdIAJPf4mNAuWnoFJw0f");
-                intent.putExtra("touristGuideID", "C1N5cGNvLiWSkCqkJ9qyVfVcoOi2");
+                intent.putExtra("packageID", documentID);
+                intent.putExtra("touristGuideID", userID);
                 intent.putExtra("packageTitle", packageTitle.getText().toString());
                 intent.putExtra("packageDes", packageDes.getText().toString());
                 intent.putExtra("packagePrice", packagePrice.getText().toString());

@@ -46,9 +46,11 @@ public class TAddFragment extends Fragment {
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     StorageReference storageReference;
+    DocumentReference documentReference;
+    DocumentReference documentReference1;
 
     Uri photoimg;
-    String userId;
+    String userId, documentId;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -163,10 +165,15 @@ public class TAddFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         userId = fAuth.getCurrentUser().getUid();
-        uploadImages(photoimg, userId);
 
-        DocumentReference documentReference = fStore.collection("TouristGuide").document(userId);
-        DocumentReference documentReference1 = documentReference.collection("Packages").document();
+
+        documentReference = fStore.collection("TouristGuide").document(userId);
+        documentReference1 = documentReference.collection("Packages").document();
+
+        documentId = documentReference1.getId();
+
+        uploadImages(photoimg, userId, documentId);
+
         Map<String, Object> packagedata = new HashMap<>();
         packagedata.put("packName", pName);
         packagedata.put("description", des);
@@ -180,7 +187,8 @@ public class TAddFragment extends Fragment {
                 Log.v("TAG", "onSuccess: Package created for " + userId);
                 Toast.makeText(getContext(), "Package Added", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
-                getActivity().finish();
+                Intent intent = new Intent(getContext(), touristGuideMain.class);
+                startActivity(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -190,6 +198,8 @@ public class TAddFragment extends Fragment {
                 Toast.makeText(getContext(), "Error adding package", Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     public void openGallery() {
@@ -232,9 +242,9 @@ public class TAddFragment extends Fragment {
     }
 
 
-    private void uploadImages(Uri profileimg, String userID) {
+    private void uploadImages(Uri profileimg, String userID, String documentId) {
         if (photoimg != null) {
-            StorageReference photoRef = storageReference.child("packages/" + userID + "/photo.jpg");
+            StorageReference photoRef = storageReference.child("Packages/" + userID + "/" + documentId + ".jpg");
             photoRef.putFile(profileimg).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

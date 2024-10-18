@@ -2,9 +2,16 @@ package com.example.travelmate;
 
 public class DataClass {
 
-    private String imageURL, caption;
+    private String imageURL, caption, documentId;
 
     public DataClass(){
+
+    }
+
+    public DataClass(String imageURL, String caption, String documentId) {
+        this.imageURL = imageURL;
+        this.caption = caption;
+        this.documentId = documentId;
 
     }
 
@@ -24,5 +31,12 @@ public class DataClass {
         this.imageURL = imageURL;
     }
 
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
 
+
+    public String getDocumentId() {
+        return documentId;
+    }
 }

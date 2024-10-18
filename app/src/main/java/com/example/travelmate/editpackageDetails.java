@@ -34,7 +34,7 @@ public class editpackageDetails extends AppCompatActivity {
     Button saveChanges;
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
-    String userID;
+    String userID,documentID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +51,17 @@ public class editpackageDetails extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
         fStore = FirebaseFirestore.getInstance();
+        userID = fAuth.getCurrentUser().getUid();
+        documentID = getIntent().getStringExtra("packageID");
 
         packageTitle.setText(getIntent().getStringExtra("packageTitle"));
         packageDes.setText(getIntent().getStringExtra("packageDes"));
         packagePrice.setText(getIntent().getStringExtra("packagePrice"));
         packageDays.setText(getIntent().getStringExtra("packageDays"));
 
-        DocumentReference documentReference = fStore.collection("TouristGuide").document(getIntent().getStringExtra("touristGuideID"));
-        DocumentReference documentReference1 = documentReference.collection("packages").document(getIntent().getStringExtra("packageID"));
-        StorageReference fileRef = storageReference.child("Packages/C1N5cGNvLiWSkCqkJ9qyVfVcoOi2/Kabaragala.jpg");
+        DocumentReference documentReference = fStore.collection("TouristGuide").document(userID);
+        DocumentReference documentReference1 = documentReference.collection("Packages").document(documentID);
+        StorageReference fileRef = storageReference.child("Packages/"+ userID +"/" + documentID + ".jpg");
 
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
