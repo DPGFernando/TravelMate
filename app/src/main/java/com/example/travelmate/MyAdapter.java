@@ -1,29 +1,27 @@
 package com.example.travelmate;
 
-import android.media.Image;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.google.firebase.database.core.Context;
-
+import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 public class MyAdapter extends BaseAdapter {
 
         private ArrayList<DataClass> dataList;
-        private Context Context ;
+        private Context context ;
+
         LayoutInflater layoutInflater;
 
-    public MyAdapter(com.google.firebase.database.core.Context context) {
-        Context = context;
-    }
 
-    public MyAdapter(ArrayList<DataClass> dataList) {
+
+    public MyAdapter(ArrayList<DataClass> dataList, android.content.Context context) {
         this.dataList = dataList;
+        this.context = context;
     }
 
     public MyAdapter() {
@@ -48,7 +46,7 @@ public class MyAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         if(layoutInflater==null){
 
-            layoutInflater=(layoutInflater) Context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         }
         if (view==null){
@@ -58,10 +56,9 @@ public class MyAdapter extends BaseAdapter {
         ImageView gridImage = view.findViewById(R.id.gridImage);
         TextView gridCaption = view.findViewById(R.id.gridCaption);
 
-        Glide.with(context).load(dataList.get(i).getImageURL())into(gridImage);
+        Glide.with(context).load(dataList.get(i).getImageURL()).into(gridImage);
         gridCaption.setText(dataList.get(i).getCaption());
-        return view;
 
-        return null;
+        return view;
     }
 }

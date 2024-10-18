@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
     android:padding="16dp"
@@ -11,15 +11,16 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         app:cardElevation="10dp"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="20dp">
 
         <ImageView
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:id="@+id/gridImage"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            />
 
-
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,7 +29,6 @@
         android:text="Caption"
         android:textSize="20dp"
         android:gravity="center"
-        android:textColor="@color/Levender"
         android:layout_marginTop="8dp"
 />
     
