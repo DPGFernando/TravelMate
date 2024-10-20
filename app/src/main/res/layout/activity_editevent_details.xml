@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    android:fillViewport="true"
+    tools:layout_editor_absoluteX="1dp"
+    tools:layout_editor_absoluteY="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".editeventDetails">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="62dp"
+            android:layout_height="63dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.985"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/applogo" />
+
+        <view
+            android:id="@+id/view"
+            class="androidx.cardview.widget.CardView"
+            android:layout_width="328dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/view"
+                app:layout_constraintEnd_toEndOf="@+id/view"
+                app:layout_constraintStart_toStartOf="@+id/view"
+                app:layout_constraintTop_toTopOf="@+id/view">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/eventImage"
+                    android:layout_width="200dp"
+                    android:layout_height="250dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="20dp"
+                    android:scaleType="centerCrop"
+                    app:shapeAppearanceOverlay="@style/CustomImageViewStyle"
+                    tools:layout_editor_absoluteX="136dp"
+                    tools:layout_editor_absoluteY="175dp"
+                    tools:srcCompat="@tools:sample/avatars" />
+
+                <EditText
+                    android:id="@+id/eventTitle"
+                    android:layout_width="310dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/inter"
+                    android:hint="Event Title"
+                    android:padding="8dp"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/date"
+                    android:layout_width="310dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/inter"
+                    android:hint="Date"
+                    android:justificationMode="inter_word"
+                    android:padding="8dp"
+                    android:textSize="20dp" />
+
+
+                <EditText
+                    android:id="@+id/venue"
+                    android:layout_width="310dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/inter"
+                    android:hint="Venue"
+                    android:padding="8dp"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/startsAt"
+                    android:layout_width="310dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/inter"
+                    android:hint="Start At"
+                    android:padding="8dp"
+                    android:textSize="20dp"
+                    android:tooltipText="Please Enter Time in 24 Hour Format" />
+
+                <EditText
+                    android:id="@+id/endsAt"
+                    android:layout_width="310dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/inter"
+                    android:hint="End At"
+                    android:padding="8dp"
+                    android:textSize="20dp"
+                    android:tooltipText="Please Enter Time in 24 Hour Format" />
+
+                <EditText
+                    android:id="@+id/entranceFee"
+                    android:layout_width="310dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/inter"
+                    android:hint="Entrance Fee"
+                    android:padding="8dp"
+                    android:textSize="20dp" />
+
+                <EditText
+                    android:id="@+id/contact"
+                    android:layout_width="310dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/inter"
+                    android:hint="Contact"
+                    android:padding="8dp"
+                    android:textSize="20dp" />
+
+
+                <Button
+                    android:id="@+id/saveChanges"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/custom_btn"
+                    android:fontFamily="@font/poppins_bold"
+                    android:text="Save Changes" />
+
+
+            </LinearLayout>
+
+        </view>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
