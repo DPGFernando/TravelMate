@@ -66,7 +66,7 @@ public class EBookingFragment extends Fragment {
     private void fetchBookingsFromFirestore() {
         DocumentReference eventDocRef =  db.collection("EventManger").document(userID);
 
-        CollectionReference bookingsRef = eventDocRef.collection("Events");
+        CollectionReference bookingsRef = eventDocRef.collection("Bookings");
 
         // Query to get bookings where the EventManagerId matches the current manager's ID
         bookingsRef.get().addOnCompleteListener(task -> {
@@ -83,7 +83,7 @@ public class EBookingFragment extends Fragment {
     // Delete a booking from Firestore based on the booking document ID
     private void deleteBookingFromFirestore(Booking booking) {
         DocumentReference eventDocRef = db.collection("EventManager").document(userID);
-        CollectionReference bookingsRef = eventDocRef.collection("Events");
+        CollectionReference bookingsRef = eventDocRef.collection("Bookings");
 
         bookingsRef.whereEqualTo("name", booking.getName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && !task.getResult().isEmpty()) {
