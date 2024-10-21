@@ -18,6 +18,12 @@
         android:theme="@style/Theme.TravelMate"
         tools:targetApi="31">
         <activity
+            android:name=".editeventDetails"
+            android:exported="false" />
+        <activity
+            android:name=".eventDetails"
+            android:exported="false" />
+        <activity
             android:name=".EventManagerProfile"
             android:exported="false" />
         <activity
