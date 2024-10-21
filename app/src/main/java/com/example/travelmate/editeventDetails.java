@@ -56,9 +56,9 @@ public class editeventDetails extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
         fStore = FirebaseFirestore.getInstance();
-        //documentID = getIntent().getStringExtra("eventID");
+        documentID = getIntent().getStringExtra("eventID");
 
-        eventTitle.setText(getIntent().getStringExtra("eventTitle"));
+        eventTitle.setText(getIntent().getStringExtra("eventName"));
         date.setText(getIntent().getStringExtra("date"));
         venue.setText(getIntent().getStringExtra("venue"));
         startsAt.setText(getIntent().getStringExtra("startsAt"));
@@ -67,8 +67,8 @@ public class editeventDetails extends AppCompatActivity {
         contact.setText(getIntent().getStringExtra("contact"));
 
         DocumentReference documentReference = fStore.collection("EventManager").document(userID);
-        DocumentReference documentReference1 = documentReference.collection("Events").document("zVb81EauNmKCZ8xUCoQA");
-        StorageReference fileRef = storageReference.child("Events/"+ userID +"/" + "zVb81EauNmKCZ8xUCoQA" + ".jpg");
+        DocumentReference documentReference1 = documentReference.collection("Events").document(documentID);
+        StorageReference fileRef = storageReference.child("Events/"+ userID +"/" + documentID + ".jpg");
 
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -90,7 +90,7 @@ public class editeventDetails extends AppCompatActivity {
                 if (eventTitle.getText().toString().isEmpty() || date.getText().toString().isEmpty() || venue.getText().toString().isEmpty() || startsAt.getText().toString().isEmpty() || endsAt.getText().toString().isEmpty() || entranceFee.getText().toString().isEmpty() ||contact.getText().toString().isEmpty()){
                     Toast.makeText(editeventDetails.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    documentReference1.update("eventTitle", eventTitle.getText().toString(),
+                    documentReference1.update("eventName", eventTitle.getText().toString(),
                             "date", date.getText().toString(),
                             "venue", venue.getText().toString(),
                             "startsAt", startsAt.getText().toString(),
@@ -100,6 +100,7 @@ public class editeventDetails extends AppCompatActivity {
 
                     Toast.makeText(editeventDetails.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(editeventDetails.this, eventDetails.class);
+                    intent.putExtra("documentID", documentID);
                     startActivity(intent);
                     finish();
                 }

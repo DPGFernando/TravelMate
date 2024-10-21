@@ -83,13 +83,14 @@ public class editpackageDetails extends AppCompatActivity {
                 if (packageTitle.getText().toString().isEmpty() || packageDes.getText().toString().isEmpty() || packagePrice.getText().toString().isEmpty() || packageDays.getText().toString().isEmpty()){
                     Toast.makeText(editpackageDetails.this, "Please fill all the fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    documentReference1.update("packageName", packageTitle.getText().toString(),
+                    documentReference1.update("packName", packageTitle.getText().toString(),
                             "description", packageDes.getText().toString(),
                             "price", packagePrice.getText().toString(),
-                            "noOfDays", packageDays.getText().toString());
+                            "nodays", packageDays.getText().toString());
 
                     Toast.makeText(editpackageDetails.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(editpackageDetails.this, packageDetails.class);
+                    intent.putExtra("documentID", documentID);
                     startActivity(intent);
                     finish();
                 }

@@ -60,10 +60,10 @@ public class eventDetails extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         fStore = FirebaseFirestore.getInstance();
         userID = fAuth.getCurrentUser().getUid();
-        //documentID = getIntent().getStringExtra("documentID");
+        documentID = getIntent().getStringExtra("documentID");
 
         DocumentReference documentReference = fStore.collection("EventManager").document(userID);
-        StorageReference fileRef = storageReference.child("Events/"+ userID +"/" + "zVb81EauNmKCZ8xUCoQA" + ".jpg");
+        StorageReference fileRef = storageReference.child("Events/"+ userID +"/" + documentID + ".jpg");
 
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -77,12 +77,12 @@ public class eventDetails extends AppCompatActivity {
             }
         });
 
-        DocumentReference documentReference1 = documentReference.collection("Events").document("zVb81EauNmKCZ8xUCoQA");
+        DocumentReference documentReference1 = documentReference.collection("Events").document(documentID);
         documentReference1.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                ueventTitle = value.getString("eventTitle");
+                ueventTitle = value.getString("eventName");
                 udate = value.getString("date");
                 uvenue = value.getString("venue");
                 ustartsAt = value.getString("startsAt");
@@ -104,9 +104,9 @@ public class eventDetails extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(eventDetails.this, editeventDetails.class);
-                //intent.putExtra("eventID", documentID);
+                intent.putExtra("eventID", documentID);
                 intent.putExtra("eventManagerID", userID);
-                intent.putExtra("eventTitle", ueventTitle);
+                intent.putExtra("eventName", ueventTitle);
                 intent.putExtra("date", udate);
                 intent.putExtra("venue", uvenue);
                 intent.putExtra("startsAt", ustartsAt);
