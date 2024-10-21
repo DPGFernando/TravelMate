@@ -42,7 +42,7 @@ public class EHomeFragment extends Fragment {
     GridView gridView;
     MyAdapter adapter;
     ArrayList<DataClass> dataList;
-    ImageView tProfile;
+    ImageView eProfile;
 
 
     @Override
@@ -56,7 +56,7 @@ public class EHomeFragment extends Fragment {
 
         firebaseStorage = FirebaseStorage.getInstance().getReference();
 
-        fileRef = firebaseStorage.child("TouristGuide/" + userID +"/profilePicture.jpg");
+        fileRef = firebaseStorage.child("EventManager/" + userID +"/profilePicture.jpg");
 
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -64,18 +64,18 @@ public class EHomeFragment extends Fragment {
                 Glide.with(getActivity())
                         .load(uri)
                         .circleCrop()
-                        .into(tProfile);
+                        .into(eProfile);
 
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                tProfile.setImageResource(R.drawable.img_3);
+                eProfile.setImageResource(R.drawable.img_3);
             }
         });
 
         gridView = view.findViewById(R.id.gridView);
-        tProfile = view.findViewById(R.id.tProfile);
+        eProfile = view.findViewById(R.id.eProfile);
         dataList = new ArrayList<>();
         adapter = new MyAdapter(dataList, getContext());
         gridView.setAdapter(adapter);
@@ -83,16 +83,16 @@ public class EHomeFragment extends Fragment {
         loadData();
 
         gridView.setOnItemClickListener((parent, view1, position, id) -> {
-            Intent intent = new Intent(getContext(), packageDetails.class);
+            Intent intent = new Intent(getContext(), eventDetails.class);
             Log.d("Document ID", dataList.get(position).getDocumentId());
             intent.putExtra("documentID", dataList.get(position).getDocumentId());
             startActivity(intent);
         });
 
-        tProfile.setOnClickListener(new View.OnClickListener() {
+        eProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), TouristGuideProfile.class);
+                Intent intent = new Intent(getContext(), EventManagerProfile.class);
                 startActivity(intent);
             }
         });
@@ -104,14 +104,14 @@ public class EHomeFragment extends Fragment {
 
         firestore = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
-        DocumentReference touristGuideDocRef = firestore.collection("EventManagers").document(userID);
+        DocumentReference eventManagerDocRef = firestore.collection("EventManager").document(userID);
 
-        CollectionReference collectionRef = touristGuideDocRef.collection("Events");
+        CollectionReference collectionRef = eventManagerDocRef.collection("Events");
 
         collectionRef.get().addOnSuccessListener(queryDocumentSnapshots -> {
             if (!queryDocumentSnapshots.isEmpty()) {
                 for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                    String title = document.getString("packName");
+                    String title = document.getString("eventName");
                     String imagePath = document.getString("photoimg");
                     String documentId = document.getId();
 
