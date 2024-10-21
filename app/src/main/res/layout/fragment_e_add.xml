@@ -1,14 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EAddFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Add Fragment" />
+        android:background="@drawable/background_gradient"
+        android:fillViewport="true"
+        android:paddingBottom="80dp">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintVertical_bias="0.5">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="62dp"
+                android:layout_height="63dp"
+                android:layout_marginTop="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.985"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/applogo" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="50dp"
+                app:cardCornerRadius="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:gravity="center"
+                        android:text="Add Event"
+                        android:textColor="@color/black"
+                        android:textSize="35sp"
+                        android:textStyle="bold" />
+
+
+                    <EditText
+                        android:id="@+id/eventName"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_marginTop="5dp"
+                        android:hint="Event Name"
+                        android:textColorLink="#0D0D0D" />
+
+
+                    <EditText
+                        android:id="@+id/date"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:hint="Date"
+                        android:inputType="date" />
+
+
+                    <EditText
+                        android:id="@+id/venue"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:hint="Venue"
+                        android:inputType="text" />
+
+
+                    <EditText
+                        android:id="@+id/startsAt"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:hint="Starts At"
+                        android:inputType="time"
+                        android:tooltipText="Enter time in 24 hour format" />
+
+
+                    <EditText
+                        android:id="@+id/endsAt"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:hint="Ends At"
+                        android:inputType="time"
+
+                        android:tooltipText="Enter time in 24 hour format" />
+
+
+                    <EditText
+                        android:id="@+id/price"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:hint="Price"
+                        android:inputType="numberDecimal"
+                         />
+
+                    <EditText
+                        android:id="@+id/contact"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:hint="Contact No" />
+
+
+                    <TextView
+                        android:id="@+id/uploadImageText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:fontFamily="@font/poppins_bold"
+                        android:padding="8dp"
+                        android:text="Upload Photo"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:id="@+id/uploadPhoto"
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp"
+                        android:layout_marginBottom="10dp"
+                        app:srcCompat="@drawable/img" />
+
+                    <TextView
+                        android:id="@+id/fileNameTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:gravity="center"
+                        android:text="No file selected"
+                        android:textColor="@android:color/darker_gray" />
+
+
+                    <Button
+                        android:id="@+id/removeFileButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="16dp"
+                        android:text="Remove file" />
+
+
+                    <Button
+                        android:id="@+id/AddEventButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:background="@drawable/rounded_button"
+                        android:backgroundTint="#2196F3"
+                        android:gravity="center"
+                        android:padding="12dp"
+                        android:text="Add Event" />
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="20dp"
+                        android:visibility="gone" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 </FrameLayout>
+
