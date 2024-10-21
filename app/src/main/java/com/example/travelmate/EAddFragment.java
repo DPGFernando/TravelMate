@@ -24,7 +24,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Source;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -35,7 +39,7 @@ import java.util.Map;
 
 public class EAddFragment extends Fragment {
 
-    EditText eventName, date, venue, startsAt, endsAt, price;
+    EditText eventName, date, venue, startsAt, endsAt, price, contact;
     TextView fileNameTextView, uploadImageText;
     ImageView uploadPhoto;
     Button AddEventButton, removeFileButton;
@@ -48,7 +52,7 @@ public class EAddFragment extends Fragment {
     DocumentReference documentReference1;
 
     Uri photoimg;
-    String userId, documentId;
+    String userId, documentId, phoneNum;
 
     @Nullable
     @Override
@@ -66,6 +70,7 @@ public class EAddFragment extends Fragment {
         fileNameTextView = view.findViewById(R.id.fileNameTextView);
         removeFileButton = view.findViewById(R.id.removeFileButton);
         AddEventButton = view.findViewById(R.id.AddEventButton);
+        contact = view.findViewById(R.id.contact);
         progressBar = view.findViewById(R.id.progressBar);
 
         removeFileButton.setVisibility(View.GONE);
@@ -106,6 +111,7 @@ public class EAddFragment extends Fragment {
         String evStart = startsAt.getText().toString();
         String evEnd = endsAt.getText().toString();
         String evPrice = price.getText().toString();
+        String evContact = contact.getText().toString();
 
         if (eName.isEmpty()) {
             eventName.setError("Event Name is required");
@@ -131,6 +137,10 @@ public class EAddFragment extends Fragment {
             price.setError("Price is required");
             return;
         }
+        if(evContact.isEmpty()){
+            contact.setError("Contact Number is required");
+            return;
+        }
 
         progressBar.setVisibility(View.VISIBLE);
 
@@ -138,6 +148,7 @@ public class EAddFragment extends Fragment {
 
         documentReference = fStore.collection("EventManager").document(userId);
         documentReference1 = documentReference.collection("Events").document();
+
 
         documentId = documentReference1.getId();
 
@@ -149,8 +160,10 @@ public class EAddFragment extends Fragment {
         eventData.put("venue", evVenue);
         eventData.put("startsAt", evStart);
         eventData.put("endsAt", evEnd);
-        eventData.put("price", evPrice);
+        eventData.put("entranceFee", evPrice);
         eventData.put("photoimg", photoimg.toString());
+        eventData.put("contact", evContact);
+
 
         documentReference1.set(eventData).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -158,7 +171,7 @@ public class EAddFragment extends Fragment {
                 Log.v("TAG", "onSuccess: Event created for " + userId);
                 Toast.makeText(getContext(), "Event Added", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
-                Intent intent = new Intent(getContext(), MainActivity.class);
+                Intent intent = new Intent(getContext(), eventManagerMain.class);
                 startActivity(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {
