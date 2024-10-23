@@ -2,7 +2,6 @@ package com.example.travelmate;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,19 +56,19 @@ public class EBookingFragment extends Fragment {
         });
         recyclerView.setAdapter(adapter);
 
-        // Fetch bookings from Firestore for the current event manager
+        // Fetch bookings from Firestore for the current tourist guide
         fetchBookingsFromFirestore();
 
         return view;
     }
 
-    // Fetch data from Firestore and populate the booking list based on the event manager ID
+    // Fetch data from Firestore and populate the booking list based on the tourist guide ID
     private void fetchBookingsFromFirestore() {
-        DocumentReference eventDocRef =  db.collection("EventManger").document(userID);
+        DocumentReference guideDocRef =  db.collection("EventManager").document(userID);
 
-        CollectionReference bookingsRef = eventDocRef.collection("Bookings");
+        CollectionReference bookingsRef = guideDocRef.collection("Bookings");
 
-        // Query to get bookings where the EventManagerId matches the current manager's ID
+        // Query to get bookings where the touristGuideId matches the current guide's ID
         bookingsRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
@@ -83,8 +82,8 @@ public class EBookingFragment extends Fragment {
 
     // Delete a booking from Firestore based on the booking document ID
     private void deleteBookingFromFirestore(Booking booking) {
-        DocumentReference eventDocRef = db.collection("EventManager").document(userID);
-        CollectionReference bookingsRef = eventDocRef.collection("Bookings");
+        DocumentReference guideDocRef = db.collection("EventManager").document(userID);
+        CollectionReference bookingsRef = guideDocRef.collection("Bookings");
 
         bookingsRef.whereEqualTo("name", booking.getName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && !task.getResult().isEmpty()) {
@@ -94,7 +93,7 @@ public class EBookingFragment extends Fragment {
         });
     }
 
-    // Booking model class with added eventManagerId field
+    // Booking model class with added touristGuideId field
     public static class Booking {
         private String name;
         private String age;
