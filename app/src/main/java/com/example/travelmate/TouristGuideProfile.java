@@ -1,13 +1,18 @@
 package com.example.travelmate;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +29,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
 
@@ -32,7 +38,8 @@ public class TouristGuideProfile extends AppCompatActivity {
     private TextView tvName, tvEmail, tvContact, username, uemail ;
     private EditText etName, etEmail, etPassword, etContact;
     private ImageView image;
-    private MaterialButton btnEdit, logOutbtn;
+    private MaterialButton btnEdit, logOutbtn,btnProfileEdit;
+    private Button saveChanges;
 
 
     FirebaseAuth fAuth;
@@ -59,6 +66,8 @@ public class TouristGuideProfile extends AppCompatActivity {
 
         btnEdit = findViewById(R.id.pen);
         logOutbtn = findViewById(R.id.logOut);
+        saveChanges = findViewById(R.id.saveChanges);
+        btnProfileEdit = findViewById(R.id.pen1);
 
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
@@ -87,6 +96,46 @@ public class TouristGuideProfile extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btnProfileEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGalleryIntent, 1010);
+
+                saveChanges.setEnabled(true);
+            }
+        });
+
+        saveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Log.v("TAG", "Profile Image uploaded successfully");
+                        Toast.makeText(TouristGuideProfile.this, "Image upload succeessfully", Toast.LENGTH_SHORT).show();
+                        saveChanges.setEnabled(false);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(TouristGuideProfile.this, "Error" + e.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1010) {
+            if (resultCode == Activity.RESULT_OK) {
+                imageUri = data.getData();
+                image.setImageURI(imageUri);
+            }
+        }
     }
 
     private void loadUserData() {

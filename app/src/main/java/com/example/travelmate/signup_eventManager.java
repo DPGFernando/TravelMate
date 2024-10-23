@@ -80,10 +80,6 @@ public class signup_eventManager extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
-        if(fAuth.getCurrentUser() != null){
-            startActivity(new Intent(getApplicationContext(), Interface.class));
-            finish();
-        }
 
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,6 +169,7 @@ public class signup_eventManager extends AppCompatActivity {
                             user.put("profileimg", profileimg);
                             user.put("nicBack", nicBackImg);
                             user.put("nicFront", nicFrontImg);
+                            user.put("password", uPass);
 
                             Toast.makeText(signup_eventManager.this, "Data Entered", Toast.LENGTH_SHORT).show();
 
@@ -188,7 +185,7 @@ public class signup_eventManager extends AppCompatActivity {
                                 }
                             });
 
-                            startActivity(new Intent(getApplicationContext(), Interface.class));
+                            startActivity(new Intent(getApplicationContext(), loggin.class));
 
                         }else{
                             Toast.makeText(signup_eventManager.this, "Error", Toast.LENGTH_SHORT).show();

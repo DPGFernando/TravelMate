@@ -53,7 +53,6 @@ public class editTouristGuide extends AppCompatActivity {
     private static final int PICK_LICENSE_IMAGE_REQUEST = 2;
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 100;
     private Uri profileImageUri, licenseImageUri;
-    private ImageView uploadProfilePhoto, uploadLicensePhoto;
     private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
@@ -84,15 +83,8 @@ public class editTouristGuide extends AppCompatActivity {
         retypePassword = findViewById(R.id.eretypePassword);
         mobileNo = findViewById(R.id.emobileNo);
         nicNo = findViewById(R.id.enicNo);
-        uploadProfilePhoto = findViewById(R.id.euploadProfilePhoto);
-        uploadLicensePhoto = findViewById(R.id.euploadLicensePhoto);
         saveButton = findViewById(R.id.esaveButton);
         progressBar = findViewById(R.id.eprogressBar);
-
-        uploadProfilePhoto.setOnClickListener(v -> requestStoragePermission(PICK_PROFILE_IMAGE_REQUEST));
-
-        // Set OnClickListener for uploading license photo
-        uploadLicensePhoto.setOnClickListener(v -> requestStoragePermission(PICK_LICENSE_IMAGE_REQUEST));
 
         loadUserData();
 
@@ -117,8 +109,6 @@ public class editTouristGuide extends AppCompatActivity {
 
     private void loadUserData() {
         DocumentReference documentReference = mstore.collection("TouristGuide").document(userID);
-        fileRef = mStorageRef.child("TouristGuide/" + userID +"/profilePicture.jpg");
-        fileRef1 = mStorageRef.child("TouristGuide/" + userID +"/licenseImage.jpg");
 
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
 
@@ -138,19 +128,6 @@ public class editTouristGuide extends AppCompatActivity {
                 mobileNo.setText(contact);
                 nicNo.setText(nic);
 
-                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).into(uploadProfilePhoto);
-                    }
-                });
-
-                fileRef1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).into(uploadLicensePhoto);
-                    }
-                });
 
             }
 
@@ -158,56 +135,6 @@ public class editTouristGuide extends AppCompatActivity {
 
     }
 
-    private void requestStoragePermission(int requestCode) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) { // For Android 13+
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
-                // Permission is not granted; request it
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.READ_MEDIA_IMAGES}, REQUEST_READ_EXTERNAL_STORAGE);
-            } else {
-                // Permission already granted, proceed with file chooser
-                openFileChooser(requestCode);
-            }
-        } else { // For Android versions below 13
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                // Permission is not granted; request it
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
-            } else {
-                // Permission already granted, proceed with file chooser
-                openFileChooser(requestCode);
-            }
-        }
-    }
-
-    private void openFileChooser(int requestCode) {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        startActivityForResult(intent, requestCode);
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-            if (requestCode == PICK_PROFILE_IMAGE_REQUEST) {
-                profileImageUri = data.getData();
-                uploadProfilePhoto.setImageURI(profileImageUri);  // Set image URI for profile picture
-            } else if (requestCode == PICK_LICENSE_IMAGE_REQUEST) {
-                licenseImageUri = data.getData();
-                uploadLicensePhoto.setImageURI(licenseImageUri);  // Set image URI for license picture
-            }
-        }
-    }
-
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_READ_EXTERNAL_STORAGE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openFileChooser(requestCode);
-            } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
     private boolean validateFields() {
         if (firstName.getText().toString().trim().isEmpty()) {
@@ -238,14 +165,7 @@ public class editTouristGuide extends AppCompatActivity {
             nicNo.setError("NIC number is required");
             return false;
         }
-        if (profileImageUri == null) {
-            Toast.makeText(this, "Please upload a profile photo", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (licenseImageUri == null) {
-            Toast.makeText(this, "Please upload a license image", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+
         return true;
     }
 
@@ -253,8 +173,7 @@ public class editTouristGuide extends AppCompatActivity {
         user.updateEmail(email.getText().toString())
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-
-                        uploadProfileImage();
+                        saveUserToFirestore();
 
                         user.sendEmailVerification().addOnSuccessListener(aVoid -> {
                             Toast.makeText(editTouristGuide.this, "Verification Email has been sent.", Toast.LENGTH_SHORT).show();
@@ -281,40 +200,16 @@ public class editTouristGuide extends AppCompatActivity {
                 });
     }
 
-    private void uploadProfileImage() {
-        final StorageReference profileImageRef = mStorageRef.child("TouristGuide/" + userID  + "/profilePicture.jpg");
-        profileImageRef.putFile(profileImageUri).addOnSuccessListener(taskSnapshot -> {
-            profileImageRef.getDownloadUrl().addOnSuccessListener(profileImageUrl -> {
-                uploadLicenseImage(profileImageUrl.toString());
-            });
-        }).addOnFailureListener(e -> {
-            Toast.makeText(editTouristGuide.this, "Failed to upload profile image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
-        });
-    }
 
-    private void uploadLicenseImage(String profileImageUrl) {
-        final StorageReference licenseImageRef = mStorageRef.child("TouristGuide/" + userID + "/licenseImage.jpg");
-        licenseImageRef.putFile(licenseImageUri).addOnSuccessListener(taskSnapshot -> {
-            licenseImageRef.getDownloadUrl().addOnSuccessListener(licenseImageUrl -> {
-                saveUserToFirestore(profileImageUrl, licenseImageUrl.toString());
-            });
-        }).addOnFailureListener(e -> {
-            Toast.makeText(editTouristGuide.this, "Failed to upload license image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
-        });
-    }
 
-    private void saveUserToFirestore(String profileImageUrl, String licenseImageUrl) {
+    private void saveUserToFirestore() {
         DocumentReference documentReference = mstore.collection("TouristGuide").document(userID);
         documentReference.update("email", email.getText().toString(),
                 "password", password.getText().toString(),
                 "firstName", firstName.getText().toString(),
                 "lastName", lastName.getText().toString(),
                 "mobileNo", mobileNo.getText().toString(),
-                "nicNo", nicNo.getText().toString(),
-                "profileImageUrl", profileImageUrl,
-                "licenseImageUrl", licenseImageUrl);
+                "nicNo", nicNo.getText().toString());
 
         Toast.makeText(editTouristGuide.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(editTouristGuide.this, TouristGuideProfile.class);

@@ -30,10 +30,10 @@
         android:id="@+id/tv_name"
         android:layout_width="242dp"
         android:layout_height="28dp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="190dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginBottom="513dp"
         android:gravity="center"
         android:text="FirstName LastName"
         android:textSize="24sp"
@@ -43,10 +43,10 @@
         android:id="@+id/tv_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="216dp"
         android:layout_marginEnd="125dp"
-        android:layout_marginBottom="496dp"
         android:text="username@gmail.com"
         android:textSize="14dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -143,6 +143,30 @@
         android:layout_marginTop="255dp"
         android:background="@drawable/img_2"
         android:clipToOutline="true" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/pen1"
+        android:layout_width="23dp"
+        android:layout_height="23dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="325dp"
+        android:layout_marginTop="34dp"
+        android:background="@drawable/img_2"
+        android:clipToOutline="true" />
+
+
+    <Button
+        android:id="@+id/saveChanges"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="122dp"
+        android:layout_marginTop="425dp"
+        android:background="@drawable/custom_btn"
+        android:enabled="false"
+        android:text="Save Changes" />
 </RelativeLayout>
 
 
