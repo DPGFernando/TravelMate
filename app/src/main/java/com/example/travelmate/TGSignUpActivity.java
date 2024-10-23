@@ -88,7 +88,7 @@ public class TGSignUpActivity extends AppCompatActivity {
             if (validateFields()) {
                 progressBar.setVisibility(View.VISIBLE);
                 uploadImagesAndCreateUser();
-                startActivity(new Intent(getApplicationContext(), Interface.class));
+                startActivity(new Intent(getApplicationContext(), loggin.class));
             } else {
                 Toast.makeText(TGSignUpActivity.this, "Please fill out all fields correctly", Toast.LENGTH_SHORT).show();
             }

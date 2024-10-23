@@ -9,15 +9,11 @@
     tools:layout_editor_absoluteX="1dp"
     tools:layout_editor_absoluteY="1dp">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        tools:context=".editTouristGuide">
+        tools:context=".editEventManager">
 
         <ImageView
             android:id="@+id/imageView"
@@ -48,7 +44,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:padding="8dp"
                 app:layout_constraintBottom_toBottomOf="@+id/view"
@@ -56,102 +52,131 @@
                 app:layout_constraintStart_toStartOf="@+id/view"
                 app:layout_constraintTop_toTopOf="@+id/view">
 
-                <TextView
 
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="66dp"
-                    android:layout_marginStart="32dp"
-                    android:gravity="center"
+                <TextView
+                    android:id="@+id/signUp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_bold"
+                    android:padding="8dp"
                     android:text="Edit Profile"
                     android:textColor="@color/black"
-                    android:textSize="35dp"
-                    android:textStyle="bold" />
-
+                    android:textSize="28sp" />
 
                 <EditText
-                    android:id="@+id/efirstName"
+                    android:id="@+id/firstName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/inter"
                     android:hint="First Name"
-                    android:textColorHint="#000000"
-                    android:textColorLink="#0D0D0D" />
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/elastName"
+                    android:id="@+id/lastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/inter"
                     android:hint="Last Name"
-                    android:textColorHint="#000000" />
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/eemail"
+                    android:id="@+id/userEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/inter"
                     android:hint="Email"
-                    android:textColorHint="#000000" />
+                    android:inputType="textEmailAddress"
+                    android:padding="8dp"
+                    android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/epassword"
+                    android:id="@+id/userPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/inter"
                     android:hint="Password"
+                    android:tooltipText="At least 8 characters"
                     android:inputType="textPassword"
-                    android:textColorHint="#000000" />
+                    android:padding="8dp"
+                    android:textSize="16sp" />
 
                 <EditText
-                    android:id="@+id/eretypePassword"
+                    android:id="@+id/retypePassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Re-Enter Password"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/inter"
+                    android:hint="Retype Password"
                     android:inputType="textPassword"
-                    android:textColorHint="#000000"
-                    app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="@color/design_default_color_primary" />
+                    android:padding="8dp"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/mobileNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:hint="Phone Number"
+                    android:tooltipText="Enter with country code"
+                    android:inputType="number"
+                    android:padding="8dp"
+                    android:textSize="16sp" />
 
 
                 <EditText
-                    android:id="@+id/emobileNo"
+                    android:id="@+id/nicNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Mobile Number"
-                    android:textColorHint="#000000" />
-
-                <EditText
-                    android:id="@+id/enicNo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="NIC"
-                    android:textColorHint="#000000" />
+                    android:layout_marginBottom="10dp"
+                    android:ems="10"
+                    android:fontFamily="@font/inter"
+                    android:hint="NIC No"
+                    android:inputType="text"
+                    android:padding="8dp"
+                    android:textSize="16sp" />
 
 
                 <Button
-                    android:id="@+id/esaveButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:background="@drawable/rounded_button"
-                    android:backgroundTint="#2196F3"
-                    android:padding="12dp"
-                    android:text="Save Changes" />
-
-
-                <ProgressBar
-                    android:id="@+id/eprogressBar"
+                    android:id="@+id/createBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="20dp"
-                    android:visibility="gone" />
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/custom_btn"
+                    android:fontFamily="@font/poppins_bold"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:text="Save Account"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:visibility="invisible" />
 
 
             </LinearLayout>
 
-
         </view>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

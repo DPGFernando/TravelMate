@@ -141,7 +141,7 @@ public class loggin extends AppCompatActivity {
                     Toast.makeText(loggin.this, "Logged in successfully ", Toast.LENGTH_SHORT).show();
 
 
-                    Intent intent = new Intent(loggin.this, eventManagerMain.class);
+                    Intent intent = new Intent(loggin.this, touristGuideMain.class);
                     startActivity(intent);
                 } else {
                     Toast.makeText(loggin.this, "Email or password is wrong", Toast.LENGTH_SHORT).show();

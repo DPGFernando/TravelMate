@@ -56,7 +56,7 @@ public class EHomeFragment extends Fragment {
 
         firebaseStorage = FirebaseStorage.getInstance().getReference();
 
-        fileRef = firebaseStorage.child("EventManager/" + userID +"/profilePicture.jpg");
+        fileRef = firebaseStorage.child("EventManager/" + userID +"/profile.jpg");
 
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
