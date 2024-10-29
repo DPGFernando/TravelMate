@@ -63,6 +63,7 @@ public class paymentGateway extends AppCompatActivity {
         DocumentReference touristGuideDoc = fStore.collection("TouristGuide").document(touristGuideId);
         DocumentReference packageDoc = touristGuideDoc.collection("Packages").document(packageId);
         DocumentReference bookingDoc = touristGuideDoc.collection("Bookings").document();
+        DocumentReference touristBookingDoc = touristDoc.collection("Bookings").document();
 
         touristDoc.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
@@ -113,6 +114,14 @@ public class paymentGateway extends AppCompatActivity {
                     booking.put("packageName", packageName);
                     booking.put("touristId", touristId);
 
+
+                    Map<String, Object> touristBooking = new HashMap<>();
+                    touristBooking.put("packageName", packageName);
+                    touristBooking.put("packageId", packageId);
+                    touristBooking.put("touristGuideId", touristGuideId);
+
+                    touristBookingDoc.set(touristBooking);
+
                     bookingDoc.set(booking).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
@@ -130,6 +139,8 @@ public class paymentGateway extends AppCompatActivity {
                             Toast.makeText(paymentGateway.this, "Error : " + e.getMessage() , Toast.LENGTH_SHORT).show();
                         }
                     });
+
+
 
                 }
         );

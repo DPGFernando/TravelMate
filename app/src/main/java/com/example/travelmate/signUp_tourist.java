@@ -158,6 +158,7 @@ public class signUp_tourist extends AppCompatActivity {
                             user.put("Email", uEmail);
                             user.put("mNum", uPhone);
                             user.put("Passport", passID);
+                            user.put("password", uPass);
 
                             Toast.makeText(signUp_tourist.this, "Data Entered", Toast.LENGTH_SHORT).show();
 

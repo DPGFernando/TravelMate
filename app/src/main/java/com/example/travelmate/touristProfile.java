@@ -33,6 +33,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class touristProfile extends AppCompatActivity {
 
@@ -73,8 +74,8 @@ public class touristProfile extends AppCompatActivity {
 
         userID = fAuth.getCurrentUser().getUid();
         firebaseStorage = FirebaseStorage.getInstance().getReference();
-        fileRef = firebaseStorage.child("tourist/" + userID + "/profile.jpg");
-        documentReference = fStore.collection("tourist").document(userID);
+        fileRef = firebaseStorage.child("Tourist/" + userID + "/profile.jpg");
+        documentReference = fStore.collection("Tourist").document(userID);
 
         loadUserData();
 
@@ -91,7 +92,7 @@ public class touristProfile extends AppCompatActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(touristProfile.this,editEventManager.class);
+                Intent intent = new Intent(touristProfile.this,editTourist.class);
                 startActivity(intent);
             }
         });
@@ -142,9 +143,9 @@ public class touristProfile extends AppCompatActivity {
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
 
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                String name = value.getString("firstName") + " " + value.getString("lastName");
-                String email = value.getString("email");
-                String contact = value.getString("phoneNumber");
+                String name = value.getString("fName") + " " + value.getString("lName");
+                String email = value.getString("Email");
+                String contact = value.getString("mNum");
 
 
                 tvName.setText(name);
@@ -161,7 +162,7 @@ public class touristProfile extends AppCompatActivity {
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(image);
+                Picasso.get().load(uri).transform(new CircleTransform()).into(image);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

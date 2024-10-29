@@ -32,7 +32,7 @@ import com.google.firebase.storage.StorageReference;
 
 public class editTourist extends AppCompatActivity {
 
-    private EditText firstName, lastName, email, password, retypePassword, mobileNo, nicNo;
+    private EditText firstName, lastName, email, password, retypePassword, mobileNo, passNo;
     private Button saveButton;
     private static final int PICK_PROFILE_IMAGE_REQUEST = 1;
     private static final int PICK_LICENSE_IMAGE_REQUEST = 2;
@@ -67,7 +67,7 @@ public class editTourist extends AppCompatActivity {
         password = findViewById(R.id.epassword);
         retypePassword = findViewById(R.id.eretypePassword);
         mobileNo = findViewById(R.id.emobileNo);
-        nicNo = findViewById(R.id.enicNo);
+        passNo = findViewById(R.id.passportNo);
         saveButton = findViewById(R.id.esaveButton);
         progressBar = findViewById(R.id.eprogressBar);
 
@@ -93,17 +93,17 @@ public class editTourist extends AppCompatActivity {
     }
 
     private void loadUserData() {
-        DocumentReference documentReference = mstore.collection("tourist").document(userID);
+        DocumentReference documentReference = mstore.collection("Tourist").document(userID);
 
         documentReference.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
 
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                String fname = value.getString("firstName");
-                String lname = value.getString("lastName");
-                String uemail = value.getString("email");
+                String fname = value.getString("fName");
+                String lname = value.getString("lName");
+                String uemail = value.getString("Email");
                 String upassword = value.getString("password");
-                String contact = value.getString("mobileNo");
-                String nic = value.getString("nicNo");
+                String contact = value.getString("mNum");
+                String pass = value.getString("Passport");
 
                 firstName.setText(fname);
                 lastName.setText(lname);
@@ -111,7 +111,7 @@ public class editTourist extends AppCompatActivity {
                 password.setText(upassword);
                 retypePassword.setText(upassword);
                 mobileNo.setText(contact);
-                nicNo.setText(nic);
+                passNo.setText(pass);
 
 
             }
@@ -146,8 +146,8 @@ public class editTourist extends AppCompatActivity {
             mobileNo.setError("Valid mobile number is required");
             return false;
         }
-        if (nicNo.getText().toString().trim().isEmpty()) {
-            nicNo.setError("NIC number is required");
+        if (passNo.getText().toString().trim().isEmpty()) {
+            passNo.setError("NIC number is required");
             return false;
         }
 
@@ -188,13 +188,14 @@ public class editTourist extends AppCompatActivity {
 
 
     private void saveUserToFirestore() {
-        DocumentReference documentReference = mstore.collection("tourist").document(userID);
-        documentReference.update("email", email.getText().toString(),
-                "password", password.getText().toString(),
-                "firstName", firstName.getText().toString(),
-                "lastName", lastName.getText().toString(),
-                "mobileNo", mobileNo.getText().toString(),
-                "nicNo", nicNo.getText().toString());
+        validateFields();
+        DocumentReference documentReference = mstore.collection("Tourist").document(userID);
+        documentReference.update("Email", email.getText().toString(),
+                "Password", password.getText().toString(),
+                "fName", firstName.getText().toString(),
+                "lName", lastName.getText().toString(),
+                "mNum", mobileNo.getText().toString(),
+                "Passport", passNo.getText().toString());
 
         Toast.makeText(editTourist.this, "Changes saved successfully", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(editTourist.this, touristProfile.class);
