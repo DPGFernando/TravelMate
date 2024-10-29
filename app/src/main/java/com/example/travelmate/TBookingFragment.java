@@ -1,6 +1,7 @@
 package com.example.travelmate;
 
 import android.app.AlertDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,12 +15,17 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +36,7 @@ public class TBookingFragment extends Fragment {
     private List<Booking> bookingList;
     private BookingAdapter adapter;
     private String userID;
+
    
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +45,7 @@ public class TBookingFragment extends Fragment {
 
         // Initialize Firestore and the booking list
         db = FirebaseFirestore.getInstance();
+
         bookingList = new ArrayList<>();
         userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -85,7 +93,7 @@ public class TBookingFragment extends Fragment {
         DocumentReference guideDocRef = db.collection("TouristGuide").document(userID);
         CollectionReference bookingsRef = guideDocRef.collection("Bookings");
 
-        bookingsRef.whereEqualTo("name", booking.getName()).get().addOnCompleteListener(task -> {
+        bookingsRef.whereEqualTo("touristName", booking.getTouristName()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && !task.getResult().isEmpty()) {
                 DocumentSnapshot document = task.getResult().getDocuments().get(0);
                 bookingsRef.document(document.getId()).delete();
@@ -95,29 +103,32 @@ public class TBookingFragment extends Fragment {
 
     // Booking model class with added touristGuideId field
     public static class Booking {
-        private String name;
-        private String age;
-        private String packName;
-        private String contact;
-        private String email;
+        private String touristName;
+        //private String age;
+        private String packageName;
+        private String touristContact;
+        private String touristEmail;
+        private String touristId;
 
 
         public Booking() { }
 
-        public Booking(String name, String age, String packName, String contact, String email) {
-            this.name = name;
-            this.age = age;
-            this.packName = packName;
-            this.contact = contact;
-            this.email = email;
+        public Booking(String touristName, String packageName, String touristContact, String touristEmail, String touristId) {
+            this.touristName = touristName;
+            //this.age = age;
+            this.packageName = packageName;
+            this.touristContact = touristContact;
+            this.touristEmail = touristEmail;
+            this.touristId = touristId;
 
         }
 
-        public String getName() { return name; }
-        public String getAge() { return age; }
-        public String getPackName() { return packName; }
-        public String getContact() { return contact; }
-        public String getEmail() { return email; }
+        public String getTouristName() { return touristName; }
+        //public String getAge() { return age; }
+        public String getPackageName() { return packageName; }
+        public String getTouristContact() { return touristContact; }
+        public String getTouristEmail() { return touristEmail; }
+        public String getTouristId() { return touristId; }
 
     }
 
@@ -126,6 +137,7 @@ public class TBookingFragment extends Fragment {
 
         private List<Booking> bookingList;
         private OnItemClickListener listener;
+        StorageReference fileRef, firebaseStorage;
 
         public interface OnItemClickListener {
             void onDeleteClick(int position);
@@ -140,17 +152,20 @@ public class TBookingFragment extends Fragment {
         @Override
         public BookingViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_tbooking_card, parent, false);
+            firebaseStorage = FirebaseStorage.getInstance().getReference();
             return new BookingViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(@NonNull BookingViewHolder holder, int position) {
             Booking booking = bookingList.get(position);
-            holder.nameTextView.setText(booking.getName());
-            holder.ageTextView.setText(String.valueOf(booking.getAge() + " years"));
-            holder.packNameTextView.setText(booking.getPackName());
-            holder.contactTextView.setText(booking.getContact());
-            holder.emailTextView.setText(booking.getEmail());
+            holder.nameTextView.setText(booking.getTouristName());
+            //holder.ageTextView.setText(String.valueOf(booking.getAge() + " years"));
+            holder.packNameTextView.setText(booking.getPackageName());
+            holder.contactTextView.setText(booking.getTouristContact());
+            holder.emailTextView.setText(booking.getTouristEmail());
+            fileRef = firebaseStorage.child("Tourist/" + booking.getTouristId() +"/profile.jpg");
+
 
             // Handle delete button click with confirmation dialog
             holder.deleteButton.setOnClickListener(v -> {
@@ -170,6 +185,18 @@ public class TBookingFragment extends Fragment {
                         })
                         .show();
             });
+
+            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).transform(new CircleTransform()).into(holder.profileImage);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    holder.profileImage.setImageResource(R.drawable.sample_profile);
+                }
+            });
         }
 
         @Override
@@ -180,7 +207,7 @@ public class TBookingFragment extends Fragment {
         // ViewHolder class for RecyclerView
         public class BookingViewHolder extends RecyclerView.ViewHolder {
             TextView nameTextView, ageTextView, packNameTextView, contactTextView, emailTextView;
-            ImageView deleteButton;
+            ImageView deleteButton, profileImage;
 
             public BookingViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -190,6 +217,7 @@ public class TBookingFragment extends Fragment {
                 contactTextView = itemView.findViewById(R.id.text_contact);
                 emailTextView = itemView.findViewById(R.id.text_email);
                 deleteButton = itemView.findViewById(R.id.delete_button);
+                profileImage = itemView.findViewById(R.id.profile_image);
             }
 
         }

@@ -19,6 +19,7 @@ public class touristGuideMain extends AppCompatActivity {
 
     FirebaseAuth fAuth;
     ActivityTouristGuideMainBinding binding;
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,10 @@ public class touristGuideMain extends AppCompatActivity {
         EdgeToEdge.enable(this);
 
         fAuth = FirebaseAuth.getInstance();
+        userID = getIntent().getStringExtra("userID");
+        Bundle bundle = new Bundle();
+        bundle.putString("userID", userID);
+
 
         FirebaseUser user = fAuth.getCurrentUser();
         if(!user.isEmailVerified()){
@@ -37,17 +42,17 @@ public class touristGuideMain extends AppCompatActivity {
         binding =ActivityTouristGuideMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        replaceFragment(new THomeFragment());
+        replaceFragment(new THomeFragment(), bundle);
 
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
 
             if (itemId == R.id.home) {
-                replaceFragment(new THomeFragment());
+                replaceFragment(new THomeFragment(), bundle);
             } else if (itemId == R.id.add) {
-                replaceFragment(new TAddFragment());
+                replaceFragment(new TAddFragment(), bundle);
             } else if (itemId == R.id.bookings) {
-                replaceFragment(new TBookingFragment());
+                replaceFragment(new TBookingFragment(), bundle);
             }
 
             return true;
@@ -60,7 +65,8 @@ public class touristGuideMain extends AppCompatActivity {
         });
     }
 
-    private void replaceFragment(Fragment fragment) {
+    private void replaceFragment(Fragment fragment, Bundle bundle) {
+        fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.replace_layout, fragment).commit();
     }
 

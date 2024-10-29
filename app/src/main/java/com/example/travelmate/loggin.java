@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -22,6 +23,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 public class loggin extends AppCompatActivity {
@@ -36,6 +41,11 @@ public class loggin extends AppCompatActivity {
     private Button loginButton;
     private TextView signUpTextView;
     private TextView clearText;
+    private FirebaseFirestore fStore;
+    private CollectionReference touristCollectionReference;
+    private CollectionReference touristGuideCollectionReference;
+    private CollectionReference eventManagerCollectionReference;
+    String userID;
     FirebaseAuth fAuth;
 
 
@@ -55,6 +65,10 @@ public class loggin extends AppCompatActivity {
         signUpTextView = findViewById(R.id.sign_up);
         clearText = findViewById(R.id.text2);
         fAuth = FirebaseAuth.getInstance();
+        fStore = FirebaseFirestore.getInstance();
+        touristCollectionReference = fStore.collection("Tourist");
+        touristGuideCollectionReference = fStore.collection("EventManager");
+        eventManagerCollectionReference = fStore.collection("TouristGuide");
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -139,10 +153,8 @@ public class loggin extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(loggin.this, "Logged in successfully ", Toast.LENGTH_SHORT).show();
-
-
-                    Intent intent = new Intent(loggin.this, touristMain.class);
-                    startActivity(intent);
+                    userID = fAuth.getCurrentUser().getUid();
+                    loadingInterface(userID);
                 } else {
                     Toast.makeText(loggin.this, "Email or password is wrong", Toast.LENGTH_SHORT).show();
                 }
@@ -150,6 +162,49 @@ public class loggin extends AppCompatActivity {
         });
 
 
+    }
+
+    private void loadingInterface(String userId) {
+        fStore.collection("Tourist").document(userId)
+                .get()
+                .addOnCompleteListener(touristTask -> {
+                    if (touristTask.isSuccessful() && touristTask.getResult().exists()) {
+                        // User is a Tourist
+                        Intent intent = new Intent(this, touristMain.class);
+                        intent.putExtra("userID", userId);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        // Check if user is a Tourist Guide
+                        fStore.collection("TouristGuide").document(userId)
+                                .get()
+                                .addOnCompleteListener(guideTask -> {
+                                    if (guideTask.isSuccessful() && guideTask.getResult().exists()) {
+                                        // User is a Tourist Guide
+                                        Intent intent = new Intent(this, touristGuideMain.class);
+                                        intent.putExtra("userID", userId);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        // Check if user is an Event Manager
+                                        fStore.collection("EventManager").document(userId)
+                                                .get()
+                                                .addOnCompleteListener(managerTask -> {
+                                                    if (managerTask.isSuccessful() && managerTask.getResult().exists()) {
+                                                        // User is an Event Manager
+                                                        Intent intent = new Intent(this, eventManagerMain.class);
+                                                        intent.putExtra("userID", userId);
+                                                        startActivity(intent);
+                                                        finish();
+                                                    } else {
+                                                        // User role not found
+                                                        Toast.makeText(this, "User role not found.", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                    }
+                                });
+                    }
+                });
     }
 
 
