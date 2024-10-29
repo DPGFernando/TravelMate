@@ -20,22 +20,13 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
-import com.squareup.picasso.Picasso;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 public class THomeFragment extends Fragment {
@@ -57,7 +48,7 @@ public class THomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_t_home, container, false);
 
         fAuth = FirebaseAuth.getInstance();
-        userID = fAuth.getCurrentUser().getUid();
+        userID = getArguments().getString("userID");
 
         firebaseStorage = FirebaseStorage.getInstance().getReference();
 
@@ -80,7 +71,7 @@ public class THomeFragment extends Fragment {
         });
 
         gridView = view.findViewById(R.id.gridView);
-        tProfile = view.findViewById(R.id.tProfile);
+        tProfile = view.findViewById(R.id.touristProfile);
         dataList = new ArrayList<>();
         adapter = new MyAdapter(dataList, getContext());
         gridView.setAdapter(adapter);
@@ -134,6 +125,7 @@ public class THomeFragment extends Fragment {
                 }
             } else {
                 Toast.makeText(getContext(), "No data found", Toast.LENGTH_SHORT).show();
+
             }
         }).addOnFailureListener(e ->
                 Toast.makeText(getContext(), "Failed to load data", Toast.LENGTH_SHORT).show()

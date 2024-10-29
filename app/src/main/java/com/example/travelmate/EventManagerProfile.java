@@ -162,7 +162,7 @@ public class EventManagerProfile extends AppCompatActivity {
         fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(image);
+                Picasso.get().load(uri).transform(new CircleTransform()).into(image);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

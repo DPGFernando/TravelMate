@@ -17,7 +17,7 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/tProfile"
+                android:id="@+id/touristProfile"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="left"
