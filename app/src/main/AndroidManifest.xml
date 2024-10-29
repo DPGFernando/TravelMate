@@ -77,9 +77,6 @@
             android:name=".signUpPage"
             android:exported="false" />
         <activity
-            android:name=".Interface"
-            android:exported="false" />
-        <activity
             android:name=".loggin"
             android:exported="false" />
         <activity
