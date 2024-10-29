@@ -33,11 +33,9 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class signup_eventManager extends AppCompatActivity {
 
@@ -157,33 +155,9 @@ public class signup_eventManager extends AppCompatActivity {
                             });
 
                             userID = fAuth.getCurrentUser().getUid();
-                            uploadImages(profileimg, nicBackImg, nicFrontImg, userID);
-
-                            DocumentReference documentReference = fStore.collection("EventManager").document(userID);
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("firstName", fName);
-                            user.put("lastName", lName);
-                            user.put("email", uEmail);
-                            user.put("phoneNumber", uPhone);
-                            user.put("NIC No", uNicNo);
-                            user.put("profileimg", profileimg);
-                            user.put("nicBack", nicBackImg);
-                            user.put("nicFront", nicFrontImg);
-                            user.put("password", uPass);
+                            uploadProfileImage(userID);
 
                             Toast.makeText(signup_eventManager.this, "Data Entered", Toast.LENGTH_SHORT).show();
-
-                            documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.v("TAG", "onSuccess: User profile is created for" + userID);
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.v("TAG", "Failed" + e.toString());
-                                }
-                            });
 
                             startActivity(new Intent(getApplicationContext(), loggin.class));
 
@@ -248,44 +222,75 @@ public class signup_eventManager extends AppCompatActivity {
     }
 
 
-    private void uploadImages(Uri profileimg, Uri nicBackImg, Uri nicFrontImg, String userID) {
 
-        StorageReference profileRef = storageReference.child("EventManager/" + userID +"/profile.jpg");
-        profileRef.putFile(profileimg).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.v("TAG", "Profile Image uploaded successfully");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(signup_eventManager.this, "Error" + e.toString(), Toast.LENGTH_SHORT).show();
-            }
+    private void uploadProfileImage(String userID) {
+        final StorageReference profileImageRef = storageReference.child("TouristGuide/" + userID  + "/profilePicture.jpg");
+        profileImageRef.putFile(profileimg).addOnSuccessListener(taskSnapshot -> {
+            profileImageRef.getDownloadUrl().addOnSuccessListener(profileImageUrl -> {
+                uploadNicBackImage(userID, profileImageUrl.toString());
+            });
+        }).addOnFailureListener(e -> {
+            Toast.makeText(signup_eventManager.this, "Failed to upload profile image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
         });
+    }
 
-        StorageReference nicBackRef = storageReference.child("EventManager/" + userID + "/nicBack.jpg");
-        nicBackRef.putFile(nicBackImg).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.v("TAG", "nicBack Image uploaded successfully");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(signup_eventManager.this, "Error" + e.toString(), Toast.LENGTH_SHORT).show();
-            }
+    private void uploadNicBackImage(String userID, String profileImageUrl) {
+        final StorageReference nicBackRef = storageReference.child("TouristGuide/" + userID + "/licenseImage.jpg");
+        nicBackRef.putFile(nicBackImg).addOnSuccessListener(taskSnapshot -> {
+            nicBackRef.getDownloadUrl().addOnSuccessListener(nicBackImageUrl -> {
+                uploadNicFrontImage(userID, profileImageUrl, nicBackImageUrl.toString());
+            });
+        }).addOnFailureListener(e -> {
+            Toast.makeText(signup_eventManager.this, "Failed to upload license image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
         });
+    }
 
-        StorageReference nicFrontRef = storageReference.child("EventManager/" + userID + "/nicFront.jpg");
-        nicFrontRef.putFile(nicFrontImg).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+    private void uploadNicFrontImage(String userID,String profileImageUrl, String nicBackImageUrl) {
+        final StorageReference nicFrontRef = storageReference.child("TouristGuide/" + userID + "/licenseImage.jpg");
+        nicFrontRef.putFile(nicBackImg).addOnSuccessListener(taskSnapshot -> {
+            nicFrontRef.getDownloadUrl().addOnSuccessListener(nicFrontImageUrl -> {
+                uploadProfileData(userID, profileImageUrl, nicBackImageUrl ,nicFrontImageUrl.toString());
+            });
+        }).addOnFailureListener(e -> {
+            Toast.makeText(signup_eventManager.this, "Failed to upload license image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
+        });
+    }
+
+
+    private void uploadProfileData(String userID, String profileImageUrl, String nicBackUrl, String nicFrontUrl){
+
+        String fName = firstName.getText().toString();
+        String lName = lastName.getText().toString();
+        String uEmail = userEmail.getText().toString().trim();
+        String uPass = userPassword.getText().toString().trim();
+        String uRetypePass = retypePassword.getText().toString();
+        String uPhone = mobileNo.getText().toString();
+        String uNicNo = nicNo.getText().toString();
+
+        DocumentReference documentReference = fStore.collection("EventManager").document(userID);
+        Map<String, Object> user = new HashMap<>();
+        user.put("firstName", fName);
+        user.put("lastName", lName);
+        user.put("email", uEmail);
+        user.put("phoneNumber", uPhone);
+        user.put("NIC No", uNicNo);
+        user.put("password", uPass);
+        user.put("profileImageUrl", profileImageUrl);
+        user.put("nicBackUrl", nicBackUrl);
+        user.put("nicFrontUrl", nicFrontUrl);
+
+        documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.v("TAG", "nicFront Image uploaded successfully");
+            public void onSuccess(Void unused) {
+                Log.v("TAG", "onSuccess: User profile is created for" + userID);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(signup_eventManager.this, "Error" + e.toString(), Toast.LENGTH_SHORT).show();
+                Log.v("TAG", "Failed" + e.toString());
             }
         });
     }
