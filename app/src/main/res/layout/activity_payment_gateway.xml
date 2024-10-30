@@ -5,16 +5,21 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Interface">
+    tools:context=".paymentGateway">
 
-    <Button
-        android:id="@+id/logOut"
-        android:layout_width="wrap_content"
+
+    <com.paypal.checkout.paymentbutton.PaymentButtonContainer
+        android:id="@+id/bookButton"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="289dp"
-        android:onClick="logout"
-        android:text="Logout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:paypal_button_color="silver"
+        app:paypal_button_enabled="true"
+        app:paypal_button_label="pay"
+        app:paypal_button_shape="rectangle"
+        app:paypal_button_size="large" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

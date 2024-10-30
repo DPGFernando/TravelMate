@@ -203,6 +203,7 @@ public class editTouristGuide extends AppCompatActivity {
 
 
     private void saveUserToFirestore() {
+        validateFields();
         DocumentReference documentReference = mstore.collection("TouristGuide").document(userID);
         documentReference.update("email", email.getText().toString(),
                 "password", password.getText().toString(),

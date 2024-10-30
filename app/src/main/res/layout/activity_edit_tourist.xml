@@ -1,10 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".editTourist">
+    android:background="@drawable/background_gradient"
+    android:fillViewport="true"
+    tools:layout_editor_absoluteX="1dp"
+    tools:layout_editor_absoluteY="1dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        tools:context=".editTourist">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="62dp"
+            android:layout_height="63dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.985"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/applogo" />
+
+        <view
+            android:id="@+id/view"
+            class="androidx.cardview.widget.CardView"
+            android:layout_width="328dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="10dp"
+            app:cardCornerRadius="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/view"
+                app:layout_constraintEnd_toEndOf="@+id/view"
+                app:layout_constraintStart_toStartOf="@+id/view"
+                app:layout_constraintTop_toTopOf="@+id/view">
+
+                <TextView
+
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="66dp"
+                    android:layout_marginStart="32dp"
+                    android:gravity="center"
+                    android:text="Edit Profile"
+                    android:textColor="@color/black"
+                    android:textSize="35dp"
+                    android:textStyle="bold" />
+
+
+                <EditText
+                    android:id="@+id/efirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:hint="First Name"
+                    android:textColorHint="#000000"
+                    android:textColorLink="#0D0D0D" />
+
+                <EditText
+                    android:id="@+id/elastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Last Name"
+                    android:textColorHint="#000000" />
+
+                <EditText
+                    android:id="@+id/eemail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+                    android:textColorHint="#000000" />
+
+                <EditText
+                    android:id="@+id/epassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:textColorHint="#000000" />
+
+                <EditText
+                    android:id="@+id/eretypePassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Re-Enter Password"
+                    android:inputType="textPassword"
+                    android:textColorHint="#000000"
+                    app:passwordToggleEnabled="true"
+                    app:passwordToggleTint="@color/design_default_color_primary" />
+
+
+                <EditText
+                    android:id="@+id/emobileNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mobile Number"
+                    android:textColorHint="#000000" />
+
+                <EditText
+                    android:id="@+id/passportNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Passport No"
+                    android:textColorHint="#000000" />
+
+
+                <Button
+                    android:id="@+id/esaveButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/rounded_button"
+                    android:backgroundTint="#2196F3"
+                    android:padding="12dp"
+                    android:text="Save Changes" />
+
+
+                <ProgressBar
+                    android:id="@+id/eprogressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="20dp"
+                    android:visibility="gone" />
+
+
+            </LinearLayout>
+
+
+        </view>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

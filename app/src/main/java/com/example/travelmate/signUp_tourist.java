@@ -68,10 +68,10 @@ public class signUp_tourist extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
-        if (fAuth.getCurrentUser() != null) {
+        /*if (fAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), Interface.class));
             finish();
-        }
+        }*/
 
         SingUpB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,6 +158,7 @@ public class signUp_tourist extends AppCompatActivity {
                             user.put("Email", uEmail);
                             user.put("mNum", uPhone);
                             user.put("Passport", passID);
+                            user.put("password", uPass);
 
                             Toast.makeText(signUp_tourist.this, "Data Entered", Toast.LENGTH_SHORT).show();
 
@@ -165,6 +166,9 @@ public class signUp_tourist extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Log.v("TAG", "onSuccess: User profile is created for" + userID);
+                                    Intent intent = new Intent(signUp_tourist.this, loggin.class);
+                                    startActivity(intent);
+
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -173,7 +177,6 @@ public class signUp_tourist extends AppCompatActivity {
                                 }
                             });
 
-                            startActivity(new Intent(getApplicationContext(), Interface.class));
 
                         }else{
                             Toast.makeText(signUp_tourist.this, "Error", Toast.LENGTH_SHORT).show();

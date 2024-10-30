@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     id("com.google.gms.google-services")
+    id("org.jetbrains.kotlin.android")version "1.8.20"
 }
 
 android {
@@ -34,6 +35,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
@@ -55,6 +60,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.1")
     implementation ("com.squareup.picasso:picasso:2.8")
+    implementation("com.paypal.checkout:android-sdk:1.3.2")
 
 
 }
