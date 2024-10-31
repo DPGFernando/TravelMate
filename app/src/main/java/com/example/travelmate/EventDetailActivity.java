@@ -1,8 +1,11 @@
 package com.example.travelmate;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,7 +20,9 @@ public class EventDetailActivity extends AppCompatActivity {
     private TextView eventName, eventDate, eventVenue, eventStartsAt, eventEndsAt, eventEntranceFee, eventContact;
     private ImageView eventImage;
     private FirebaseFirestore db;
-    private String documentID;
+    private String documentID,userId;
+    String managerId;
+    private Button eventBookButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,9 @@ public class EventDetailActivity extends AppCompatActivity {
         eventEntranceFee = findViewById(R.id.eventPrice);
         eventContact = findViewById(R.id.eventContact);
         eventImage = findViewById(R.id.eventImage);
+        eventBookButton = findViewById(R.id.eventBookButton);
+
+        userId = getIntent().getStringExtra("touristId");
 
         db = FirebaseFirestore.getInstance();
 
@@ -46,6 +54,17 @@ public class EventDetailActivity extends AppCompatActivity {
             Toast.makeText(this, "Event data not available.", Toast.LENGTH_SHORT).show();
             finish();  // Close the activity if no document ID is provided
         }
+
+        eventBookButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EventDetailActivity.this, eventPaymentGateway.class);
+                intent.putExtra("managerId", managerId);
+                intent.putExtra("touristId", userId);
+                intent.putExtra("eventId", documentID);
+                startActivity(intent);
+            }
+        });
     }
 
     @SuppressLint("SetTextI18n")
@@ -67,6 +86,7 @@ public class EventDetailActivity extends AppCompatActivity {
                                 String contact = document.getString("contact");
                                 String venue = document.getString("venue");
                                 String photoimg = document.getString("photoimg");
+                                managerId = document.getString("managerId");
 
                                 // Set event details to UI components
                                 eventName.setText(name);
@@ -98,5 +118,6 @@ public class EventDetailActivity extends AppCompatActivity {
                     Toast.makeText(EventDetailActivity.this, "Failed to load event data", Toast.LENGTH_SHORT).show();
                 });
     }
+
 
 }

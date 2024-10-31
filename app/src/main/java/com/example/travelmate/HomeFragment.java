@@ -98,7 +98,6 @@ public class HomeFragment extends Fragment {
         guideGridView.setAdapter(adapter1);
         eventGridView.setAdapter(adapter2);
 
-
         return view;
     }
 

@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -23,6 +25,7 @@ public class EventFragment extends Fragment {
     private FirebaseFirestore db;
     private List<Event> eventList;
     private EventAdapter eventAdapter;
+    String userId;
 
     @Nullable
     @Override
@@ -35,6 +38,7 @@ public class EventFragment extends Fragment {
         eventList = new ArrayList<>();
         eventAdapter = new EventAdapter(getContext(), eventList);
         eventsGridView.setAdapter(eventAdapter);
+        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         fetchEventsFromFirestore();
 
@@ -48,6 +52,7 @@ public class EventFragment extends Fragment {
             if (documentId != null) {
                 Intent intent = new Intent(getContext(), EventDetailActivity.class);
                 intent.putExtra("documentID", documentId);
+                intent.putExtra("touristId", userId);
                 startActivity(intent);
             } else {
                 Log.e("EventFragment", "Document ID is null for the selected event.");

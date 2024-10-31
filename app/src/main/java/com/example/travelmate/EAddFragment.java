@@ -154,34 +154,7 @@ public class EAddFragment extends Fragment {
 
         uploadImages(photoimg, userId, documentId);
 
-        Map<String, Object> eventData = new HashMap<>();
-        eventData.put("eventName", eName);
-        eventData.put("date", evDate);
-        eventData.put("venue", evVenue);
-        eventData.put("startsAt", evStart);
-        eventData.put("endsAt", evEnd);
-        eventData.put("entranceFee", evPrice);
-        eventData.put("photoimg", photoimg.toString());
-        eventData.put("contact", evContact);
 
-
-        documentReference1.set(eventData).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Log.v("TAG", "onSuccess: Event created for " + userId);
-                Toast.makeText(getContext(), "Event Added", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.GONE);
-                Intent intent = new Intent(getContext(), eventManagerMain.class);
-                startActivity(intent);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.v("TAG", "Failed: " + e.toString());
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Error adding event", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     public void openGallery() {
@@ -221,18 +194,56 @@ public class EAddFragment extends Fragment {
 
     private void uploadImages(Uri photoUri, String userID, String documentId) {
         if (photoUri != null) {
-            StorageReference photoRef = storageReference.child("Events/" + userID + "/" + documentId + ".jpg");
-            photoRef.putFile(photoUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.v("TAG", "Image uploaded successfully");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), "Error uploading image", Toast.LENGTH_SHORT).show();
-                }
+            final StorageReference profileImageRef = storageReference.child("Events/" + userID  + "/" + documentId + ".jpg");
+            profileImageRef.putFile(photoUri).addOnSuccessListener(taskSnapshot -> {
+                profileImageRef.getDownloadUrl().addOnSuccessListener(profileImageUrl -> {
+                    uploadData(profileImageUrl.toString());
+                });
+            }).addOnFailureListener(e -> {
+                Toast.makeText(getContext(), "Failed to upload profile image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             });
+
         }
+    }
+
+    private void uploadData(String imageUrl) {
+
+        String eName = eventName.getText().toString();
+        String evDate = date.getText().toString();
+        String evVenue = venue.getText().toString();
+        String evStart = startsAt.getText().toString();
+        String evEnd = endsAt.getText().toString();
+        String evPrice = price.getText().toString();
+        String evContact = contact.getText().toString();
+
+        Map<String, Object> eventData = new HashMap<>();
+        eventData.put("eventName", eName);
+        eventData.put("date", evDate);
+        eventData.put("venue", evVenue);
+        eventData.put("startsAt", evStart);
+        eventData.put("endsAt", evEnd);
+        eventData.put("entranceFee", evPrice);
+        eventData.put("photoimg", imageUrl);
+        eventData.put("managerId", userId);
+        eventData.put("contact", evContact);
+
+        documentReference1.set(eventData).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.v("TAG", "onSuccess: Event created for " + userId);
+                Toast.makeText(getContext(), "Event Added", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+                Intent intent = new Intent(getContext(), eventManagerMain.class);
+                startActivity(intent);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.v("TAG", "Failed: " + e.toString());
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Error adding event", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
