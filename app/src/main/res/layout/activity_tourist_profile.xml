@@ -176,11 +176,51 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="123dp"
-        android:layout_marginLeft="122dp"
-        android:layout_marginTop="425dp"
+        android:layout_marginLeft="121dp"
+        android:layout_marginTop="415dp"
         android:background="@drawable/custom_btn"
         android:enabled="false"
         android:text="Save Changes" />
+
+    <TextView
+        android:id="@+id/bookingList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="53dp"
+        android:layout_marginLeft="49dp"
+        android:layout_marginTop="472dp"
+        android:fontFamily="@font/poppins_bold"
+        android:text="Booking Details" />
+
+    <view
+        android:id="@+id/viewReviewCollection"
+        class="androidx.cardview.widget.CardView"
+        android:layout_width="312dp"
+        android:layout_height="210dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="52dp"
+        android:layout_marginLeft="52dp"
+        android:layout_marginTop="502dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="20dp"
+        app:cardCornerRadius="16dp">
+
+        <GridView
+            android:id="@+id/bookingGridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:isScrollContainer="false"
+            android:numColumns="2"
+            android:scrollbars="none"
+            android:stretchMode="columnWidth" />
+
+    </view>
 
 
 </RelativeLayout>

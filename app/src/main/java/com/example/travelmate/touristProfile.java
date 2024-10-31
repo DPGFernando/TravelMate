@@ -1,14 +1,19 @@
 package com.example.travelmate;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,20 +25,27 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class touristProfile extends AppCompatActivity {
 
@@ -42,12 +54,16 @@ public class touristProfile extends AppCompatActivity {
     private ImageView image;
     private MaterialButton btnEdit, logOutbtn, btnProfileEdit;
     private Button saveChanges;
+    private GridView bookingGridView;
 
 
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     String userID;
     StorageReference firebaseStorage;
+    List<MyBooking> bookingList;
+    MyBookingAdapter adapter;
+    FirebaseFirestore db;
     Uri imageUri;
     DocumentReference documentReference;
     StorageReference fileRef;
@@ -69,6 +85,15 @@ public class touristProfile extends AppCompatActivity {
         btnProfileEdit = findViewById(R.id.pen1);
         logOutbtn = findViewById(R.id.logOut);
 
+        db = FirebaseFirestore.getInstance();
+        bookingList = new ArrayList<>();
+        adapter = new MyBookingAdapter(this, bookingList);
+
+
+        bookingGridView = findViewById(R.id.bookingGridView);
+
+        bookingGridView.setAdapter(adapter);
+
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
@@ -78,6 +103,7 @@ public class touristProfile extends AppCompatActivity {
         documentReference = fStore.collection("Tourist").document(userID);
 
         loadUserData();
+        fetchBookingFromFirestore();
 
 
         logOutbtn.setOnClickListener(new View.OnClickListener() {
@@ -170,6 +196,133 @@ public class touristProfile extends AppCompatActivity {
                 image.setImageResource(R.drawable.img_3);
             }
         });
+
+    }
+
+    private void fetchBookingFromFirestore() {
+
+        CollectionReference guideRef = db.collection("Tourist").document(userID).collection("Bookings");
+
+        // Query to get bookings where the touristGuideId matches the current guide's ID
+        guideRef.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document1 : task.getResult()) {
+                    MyBooking booking = document1.toObject(MyBooking.class);
+                    //booking.setDocumentId(document1.getId());
+                    bookingList.add(booking);
+                }
+                adapter.notifyDataSetChanged();
+
+            }
+        });
+
+    }
+
+    public static class MyBooking{
+        private String Id;
+        private String packageName;
+        private String packageId;
+
+        public MyBooking(String Id, String packageName, String packageId) {
+            this.Id = Id;
+            this.packageName = packageName;
+            this.packageId = packageId;
+        }
+
+        public MyBooking() {}
+
+        public String getId() {
+            return Id;
+        }
+
+        public String getPackageName() {
+            return packageName;
+        }
+
+        public String getPackageId() {
+            return packageId;
+        }
+    }
+
+    public static class MyBookingAdapter extends BaseAdapter {
+        private Context context;
+        private List<MyBooking> bookings;
+        StorageReference fileRef, firebaseStorage, fileRef1;
+
+        public MyBookingAdapter(Context context, List<MyBooking> bookings) {
+            this.context = context;
+            this.bookings = bookings;
+        }
+
+        public int getCount() {
+            return bookings.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return bookings.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+
+            if (convertView == null) {
+                convertView = LayoutInflater.from(context).inflate(R.layout.grid_item, parent, false);
+                holder = new ViewHolder(convertView);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            MyBooking booking = bookings.get(position);
+            holder.nameTextView.setText(booking.getPackageName());
+
+            firebaseStorage = FirebaseStorage.getInstance().getReference();
+            fileRef = firebaseStorage.child("Packages/" + booking.getId() + "/" + booking.getPackageId() + ".jpg");
+            fileRef1 = firebaseStorage.child("Events/" + booking.getId() + "/" + booking.getPackageId() + ".jpg");
+
+            fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).transform(new CircleTransform()).into(holder.profileImageView);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    holder.profileImageView.setImageResource(R.drawable.sample_profile);
+                }
+            });
+
+            fileRef1.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).transform(new CircleTransform()).into(holder.profileImageView);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    holder.profileImageView.setImageResource(R.drawable.sample_profile);
+                }
+            });
+
+            return convertView;
+        }
+
+        private static class ViewHolder {
+            TextView nameTextView;
+            ImageView profileImageView;
+
+            ViewHolder(View view) {
+                nameTextView = view.findViewById(R.id.gridCaption);
+                profileImageView = view.findViewById(R.id.gridImage);
+            }
+        }
+
 
     }
 }

@@ -16,14 +16,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/tProfile"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_gravity="left"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:background="@drawable/circle_shape"/>
 
             <ImageView
                 android:id="@+id/imageView"
@@ -31,7 +23,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="end"
                 android:layout_marginBottom="10dp"
-                android:layout_marginStart="230dp"
+                android:layout_marginStart="300dp"
                 android:background="@drawable/applogo" />
 
         </LinearLayout>

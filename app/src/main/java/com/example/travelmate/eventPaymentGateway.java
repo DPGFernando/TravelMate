@@ -36,33 +36,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class paymentGateway extends AppCompatActivity {
+public class eventPaymentGateway extends AppCompatActivity {
 
+    String managerId;
     PaymentButtonContainer paymentButtonContainer;
     String touristGuideId, touristId, packageId, packageName, touristName, touristContact, touristEmail, packagePrice;
     FirebaseFirestore fStore;
     StorageReference storageReference;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_payment_gateway);
+        setContentView(R.layout.activity_event_payment_gateway);
+
+        managerId = getIntent().getStringExtra("managerId");
 
         paymentButtonContainer = findViewById(R.id.bookButton);
-        touristGuideId = getIntent().getStringExtra("touristGuideId");
         touristId = getIntent().getStringExtra("touristId");
-        packageId = getIntent().getStringExtra("packageId");
+        packageId = getIntent().getStringExtra("eventId");
         fStore = FirebaseFirestore.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
 
 
         DocumentReference touristDoc = fStore.collection("Tourist").document(touristId);
-        DocumentReference touristGuideDoc = fStore.collection("TouristGuide").document(touristGuideId);
-        DocumentReference packageDoc = touristGuideDoc.collection("Packages").document(packageId);
-        DocumentReference bookingDoc = touristGuideDoc.collection("Bookings").document();
+        DocumentReference eventManagerDoc = fStore.collection("EventManager").document(managerId);
+        DocumentReference packageDoc = eventManagerDoc.collection("Events").document(packageId);
+        DocumentReference bookingDoc = eventManagerDoc.collection("Bookings").document();
         DocumentReference touristBookingDoc = touristDoc.collection("Bookings").document();
 
         touristDoc.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
@@ -77,8 +77,8 @@ public class paymentGateway extends AppCompatActivity {
         packageDoc.addSnapshotListener(this, new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                packageName = value.getString("packName");
-                packagePrice = value.getString("price");
+                packageName = value.getString("eventName");
+                packagePrice = value.getString("entranceFee");
             }
         });
 
@@ -118,7 +118,7 @@ public class paymentGateway extends AppCompatActivity {
                     Map<String, Object> touristBooking = new HashMap<>();
                     touristBooking.put("packageName", packageName);
                     touristBooking.put("packageId", packageId);
-                    touristBooking.put("Id", touristGuideId);
+                    touristBooking.put("Id", managerId);
 
                     touristBookingDoc.set(touristBooking);
 
@@ -126,7 +126,7 @@ public class paymentGateway extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(getApplicationContext(), "Booking Add Successful", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(paymentGateway.this, bookTouristPackages.class);
+                            Intent intent = new Intent(eventPaymentGateway.this, EventDetailActivity.class);
                             intent.putExtra("touristGuideId", touristGuideId);
                             intent.putExtra("packageId", packageId);
                             intent.putExtra("touristId", touristId);
@@ -136,7 +136,7 @@ public class paymentGateway extends AppCompatActivity {
 
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(paymentGateway.this, "Error : " + e.getMessage() , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(eventPaymentGateway.this, "Error : " + e.getMessage() , Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -144,6 +144,7 @@ public class paymentGateway extends AppCompatActivity {
 
                 }
         );
+
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

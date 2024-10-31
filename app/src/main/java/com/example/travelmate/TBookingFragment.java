@@ -104,7 +104,6 @@ public class TBookingFragment extends Fragment {
     // Booking model class with added touristGuideId field
     public static class Booking {
         private String touristName;
-        //private String age;
         private String packageName;
         private String touristContact;
         private String touristEmail;
@@ -115,7 +114,6 @@ public class TBookingFragment extends Fragment {
 
         public Booking(String touristName, String packageName, String touristContact, String touristEmail, String touristId) {
             this.touristName = touristName;
-            //this.age = age;
             this.packageName = packageName;
             this.touristContact = touristContact;
             this.touristEmail = touristEmail;
@@ -124,7 +122,6 @@ public class TBookingFragment extends Fragment {
         }
 
         public String getTouristName() { return touristName; }
-        //public String getAge() { return age; }
         public String getPackageName() { return packageName; }
         public String getTouristContact() { return touristContact; }
         public String getTouristEmail() { return touristEmail; }
@@ -160,7 +157,6 @@ public class TBookingFragment extends Fragment {
         public void onBindViewHolder(@NonNull BookingViewHolder holder, int position) {
             Booking booking = bookingList.get(position);
             holder.nameTextView.setText(booking.getTouristName());
-            //holder.ageTextView.setText(String.valueOf(booking.getAge() + " years"));
             holder.packNameTextView.setText(booking.getPackageName());
             holder.contactTextView.setText(booking.getTouristContact());
             holder.emailTextView.setText(booking.getTouristEmail());
@@ -206,13 +202,12 @@ public class TBookingFragment extends Fragment {
 
         // ViewHolder class for RecyclerView
         public class BookingViewHolder extends RecyclerView.ViewHolder {
-            TextView nameTextView, ageTextView, packNameTextView, contactTextView, emailTextView;
+            TextView nameTextView,  packNameTextView, contactTextView, emailTextView;
             ImageView deleteButton, profileImage;
 
             public BookingViewHolder(@NonNull View itemView) {
                 super(itemView);
                 nameTextView = itemView.findViewById(R.id.text_name);
-                ageTextView = itemView.findViewById(R.id.text_age);
                 packNameTextView = itemView.findViewById(R.id.text_location);
                 contactTextView = itemView.findViewById(R.id.text_contact);
                 emailTextView = itemView.findViewById(R.id.text_email);
