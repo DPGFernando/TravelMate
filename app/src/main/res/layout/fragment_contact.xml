@@ -64,7 +64,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_margin="8dp">
 
 
                 <TextView
@@ -120,6 +121,7 @@
                     android:gravity="center"
                     android:padding="12dp"
                     android:text="Search"
+                    android:enabled="false"
                     android:textColor="@color/white"
                     android:textSize="14sp"
                     android:textStyle="bold" />
@@ -135,8 +137,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:padding="16dp"
-            android:visibility="gone"
             app:cardCornerRadius="16dp"
+            android:visibility="gone"
             app:cardElevation="8dp"
             app:cardBackgroundColor="@color/white"
             app:layout_constraintTop_toBottomOf="@+id/card_input"
@@ -146,13 +148,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_margin="8dp">
 
                 <TextView
                     android:id="@+id/text_place"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Place: "
+                    android:layout_marginBottom="5dp"
                     android:textSize="18sp"
                     android:textColor="@color/black" />
 
@@ -161,6 +165,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Location: "
+                    android:layout_marginBottom="5dp"
+                    android:textSize="18sp"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:id="@+id/text_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Category: "
+                    android:layout_marginBottom="5dp"
                     android:textSize="18sp"
                     android:textColor="@color/black" />
 
@@ -169,8 +183,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Contact: "
+                    android:layout_marginBottom="5dp"
                     android:textSize="18sp"
                     android:textColor="@color/black" />
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
