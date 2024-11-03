@@ -173,8 +173,17 @@ public class TGSignUpActivity extends AppCompatActivity {
             mobileNo.setError("Valid mobile number is required");
             return false;
         }
-        if (nicNo.getText().toString().trim().isEmpty()) {
-            nicNo.setError("NIC number is required");
+
+        if (nicNo.getText().toString().trim().isEmpty() || !(nicNo.getText().toString().trim().length() == 10 || nicNo.getText().toString().trim().length() == 12) || (nicNo.getText().toString().trim().length() == 10 && !nicNo.getText().toString().trim().matches(".*[VXvx]$"))) {
+            if (nicNo.getText().toString().trim().isEmpty()) {
+                nicNo.setError("NIC number is required");
+            } else if (!(nicNo.getText().toString().trim().length() == 10 || nicNo.getText().toString().trim().length() == 12)) {
+                nicNo.setError("NIC number does not contain valid character count");
+            } else if (nicNo.getText().toString().trim().length() == 10 && !nicNo.getText().toString().trim().matches(".*[VXvx]$")) {
+                nicNo.setError("Last character should changed with 'V' or 'X'");
+            } else if (nicNo.getText().toString().trim().length() == 9 ) {
+                nicNo.setError("Your NIC number should end with 'V' or 'X'");
+            }
             return false;
         }
         if (profileImageUri == null) {

@@ -137,8 +137,8 @@ public class EAddFragment extends Fragment {
             price.setError("Price is required");
             return;
         }
-        if(evContact.isEmpty()){
-            contact.setError("Contact Number is required");
+        if(evContact.isEmpty() || evContact.length() != 10){
+            contact.setError("Valid Contact Number is required");
             return;
         }
 

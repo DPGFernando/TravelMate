@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +40,7 @@ public class EventManagerProfile extends AppCompatActivity {
 
     private TextView tvName, tvEmail, tvContact, username, uemail;
     private EditText etName, etEmail, etPassword, etContact;
-    private ImageView image;
+    private ImageView image, backButton;
     private MaterialButton btnEdit, logOutbtn, btnProfileEdit;
     private Button saveChanges;
 
@@ -63,6 +64,7 @@ public class EventManagerProfile extends AppCompatActivity {
         username = findViewById(R.id.username);
         uemail = findViewById(R.id.email_usern);
         tvContact = findViewById(R.id.contact_947);
+        backButton = findViewById(R.id.backButton);
         image = findViewById(R.id.image);
         saveChanges = findViewById(R.id.saveChanges);
         btnEdit = findViewById(R.id.pen);
@@ -74,7 +76,7 @@ public class EventManagerProfile extends AppCompatActivity {
 
         userID = fAuth.getCurrentUser().getUid();
         firebaseStorage = FirebaseStorage.getInstance().getReference();
-        fileRef = firebaseStorage.child("EventManager/" + userID + "/profile.jpg");
+        fileRef = firebaseStorage.child("EventManager/" + userID + "/profilePicture.jpg");
         documentReference = fStore.collection("EventManager").document(userID);
 
         loadUserData();
@@ -123,6 +125,20 @@ public class EventManagerProfile extends AppCompatActivity {
                         Toast.makeText(EventManagerProfile.this, "Error" + e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventManagerProfile.this, eventManagerMain.class);
+            startActivity(intent);
+            finish();
+
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Do nothing to disable back button
             }
         });
 

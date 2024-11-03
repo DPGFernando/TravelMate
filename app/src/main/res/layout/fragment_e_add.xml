@@ -77,7 +77,7 @@
                         android:id="@+id/date"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:hint="Date"
+                        android:hint="Date (DD/MM/YYYY)"
                         android:inputType="date" />
 
 
@@ -93,7 +93,7 @@
                         android:id="@+id/startsAt"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:hint="Starts At"
+                        android:hint="Starts At (24 hour Format)"
                         android:inputType="time"
                         android:tooltipText="Enter time in 24 hour format" />
 
@@ -102,7 +102,7 @@
                         android:id="@+id/endsAt"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:hint="Ends At"
+                        android:hint="Ends At (24 hour Format)"
                         android:inputType="time"
 
                         android:tooltipText="Enter time in 24 hour format" />
@@ -112,9 +112,8 @@
                         android:id="@+id/price"
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
-                        android:hint="Price"
-                        android:inputType="numberDecimal"
-                         />
+                        android:hint="Price (Enter price in $)"
+                        android:inputType="numberDecimal" />
 
                     <EditText
                         android:id="@+id/contact"

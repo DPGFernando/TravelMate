@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,7 +33,7 @@ import com.squareup.picasso.Picasso;
 public class packageDetails extends AppCompatActivity {
 
     TextView packageTitle, packageDes, packagePrice, packageDays;
-    ImageView packageImage;
+    ImageView packageImage, backBtn;
     StorageReference storageReference;
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
@@ -47,6 +48,7 @@ public class packageDetails extends AppCompatActivity {
 
         packageTitle = findViewById(R.id.packageTitle);
         packageDes = findViewById(R.id.packageDes);
+        backBtn = findViewById(R.id.backButton);
         packagePrice = findViewById(R.id.packagePrice);
         packageDays = findViewById(R.id.packageDays);
         packageImage = findViewById(R.id.packageImage);
@@ -56,6 +58,7 @@ public class packageDetails extends AppCompatActivity {
         fStore = FirebaseFirestore.getInstance();
         userID = fAuth.getCurrentUser().getUid();
         documentID = getIntent().getStringExtra("documentID");
+
 
         DocumentReference documentReference = fStore.collection("TouristGuide").document(userID);
         StorageReference fileRef = storageReference.child("Packages/"+ userID +"/" + documentID + ".jpg");
@@ -78,7 +81,7 @@ public class packageDetails extends AppCompatActivity {
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
                 packageTitle.setText(value.getString("packName"));
                 packageDes.setText(value.getString("description"));
-                packagePrice.setText(value.getString("price"));
+                packagePrice.setText("$ " + value.getString("price"));
                 packageDays.setText(value.getString("nodays") + " days");
             }
         });
@@ -94,6 +97,21 @@ public class packageDetails extends AppCompatActivity {
                 intent.putExtra("packagePrice", packagePrice.getText().toString());
                 intent.putExtra("packageDays", packageDays.getText().toString());
                 startActivity(intent);
+            }
+        });
+
+
+        backBtn.setOnClickListener(v -> {
+            Intent intent = new Intent(packageDetails.this, touristGuideMain.class);
+            startActivity(intent);
+            finish();
+
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Do nothing to disable back button
             }
         });
 
