@@ -174,31 +174,6 @@ public class TAddFragment extends Fragment {
 
         uploadImages(photoimg, userId, documentId);
 
-        Map<String, Object> packagedata = new HashMap<>();
-        packagedata.put("packName", pName);
-        packagedata.put("description", des);
-        packagedata.put("price", pr);
-        packagedata.put("nodays", nDays);
-        packagedata.put("photoimg", photoimg.toString());
-
-        documentReference1.set(packagedata).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Log.v("TAG", "onSuccess: Package created for " + userId);
-                Toast.makeText(getContext(), "Package Added", Toast.LENGTH_SHORT).show();
-                progressBar.setVisibility(View.GONE);
-                Intent intent = new Intent(getContext(), touristGuideMain.class);
-                startActivity(intent);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.v("TAG", "Failed: " + e.toString());
-                progressBar.setVisibility(View.GONE);
-                Toast.makeText(getContext(), "Error adding package", Toast.LENGTH_SHORT).show();
-            }
-        });
-
 
     }
 
@@ -242,20 +217,51 @@ public class TAddFragment extends Fragment {
     }
 
 
-    private void uploadImages(Uri profileimg, String userID, String documentId) {
-        if (photoimg != null) {
-            StorageReference photoRef = storageReference.child("Packages/" + userID + "/" + documentId + ".jpg");
-            photoRef.putFile(profileimg).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.v("TAG", "Image uploaded successfully");
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(getContext(), "Error uploading image", Toast.LENGTH_SHORT).show();
-                }
+    private void uploadImages(Uri photoUri, String userID, String documentId) {
+        if (photoUri != null) {
+            final StorageReference profileImageRef = storageReference.child("Packages/" + userID  + "/" + documentId + ".jpg");
+            profileImageRef.putFile(photoUri).addOnSuccessListener(taskSnapshot -> {
+                profileImageRef.getDownloadUrl().addOnSuccessListener(profileImageUrl -> {
+                    uploadData(profileImageUrl.toString());
+                });
+            }).addOnFailureListener(e -> {
+                Toast.makeText(getContext(), "Failed to upload profile image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             });
+
         }
+    }
+
+    private void uploadData(String imageUrl) {
+
+        String pName = packName.getText().toString();
+        String des = description.getText().toString();
+        String pr = price.getText().toString();
+        String nDays = nodays.getText().toString();
+
+        Map<String, Object> packagedata = new HashMap<>();
+        packagedata.put("packName", pName);
+        packagedata.put("description", des);
+        packagedata.put("price", pr);
+        packagedata.put("nodays", nDays);
+        packagedata.put("photoimg", imageUrl);
+
+        documentReference1.set(packagedata).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.v("TAG", "onSuccess: Package created for " + userId);
+                Toast.makeText(getContext(), "Package Added", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+                Intent intent = new Intent(getContext(), touristGuideMain.class);
+                startActivity(intent);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.v("TAG", "Failed: " + e.toString());
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(getContext(), "Error adding package", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

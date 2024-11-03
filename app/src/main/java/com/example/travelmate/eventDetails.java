@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +34,7 @@ import com.squareup.picasso.Picasso;
 public class eventDetails extends AppCompatActivity {
 
     TextView eventTitle, date, venue, startsAt, endsAt, entranceFee, contact;
-    ImageView eventImage;
+    ImageView eventImage, backButton;
     StorageReference storageReference;
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
@@ -53,6 +54,7 @@ public class eventDetails extends AppCompatActivity {
         startsAt = findViewById(R.id.startsAt);
         endsAt = findViewById(R.id.endsAt);
         entranceFee = findViewById(R.id.entranceFee);
+        backButton = findViewById(R.id.backButton);
         contact = findViewById(R.id.contact);
         eventImage = findViewById(R.id.eventImage);
         editPackage = findViewById(R.id.editPackage);
@@ -95,7 +97,7 @@ public class eventDetails extends AppCompatActivity {
                 venue.setText("Venue : " + uvenue);
                 startsAt.setText("StartsAt : " + ustartsAt);
                 endsAt.setText("Ends At : " + uendsAt);
-                entranceFee.setText("Entrance Fee : " + uentranceFee);
+                entranceFee.setText("Entrance Fee : $ " + uentranceFee);
                 contact.setText("Contact : " + ucontact);
             }
         });
@@ -114,6 +116,20 @@ public class eventDetails extends AppCompatActivity {
                 intent.putExtra("entranceFee", uentranceFee);
                 intent.putExtra("contact", ucontact);
                 startActivity(intent);
+            }
+        });
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(eventDetails.this, eventManagerMain.class);
+            startActivity(intent);
+            finish();
+
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Do nothing to disable back button
             }
         });
 

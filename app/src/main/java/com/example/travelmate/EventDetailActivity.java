@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -18,7 +20,7 @@ import com.squareup.picasso.Picasso;
 public class EventDetailActivity extends AppCompatActivity {
 
     private TextView eventName, eventDate, eventVenue, eventStartsAt, eventEndsAt, eventEntranceFee, eventContact;
-    private ImageView eventImage;
+    private ImageView eventImage, backButton;
     private FirebaseFirestore db;
     private String documentID,userId;
     String managerId;
@@ -39,6 +41,7 @@ public class EventDetailActivity extends AppCompatActivity {
         eventContact = findViewById(R.id.eventContact);
         eventImage = findViewById(R.id.eventImage);
         eventBookButton = findViewById(R.id.eventBookButton);
+        backButton = findViewById(R.id.backButton);
 
         userId = getIntent().getStringExtra("touristId");
 
@@ -63,6 +66,20 @@ public class EventDetailActivity extends AppCompatActivity {
                 intent.putExtra("touristId", userId);
                 intent.putExtra("eventId", documentID);
                 startActivity(intent);
+            }
+        });
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EventDetailActivity.this, touristMain.class);
+            startActivity(intent);
+            finish();
+
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Do nothing to disable back button
             }
         });
     }

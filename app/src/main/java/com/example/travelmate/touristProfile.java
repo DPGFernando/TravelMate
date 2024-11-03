@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,7 +52,7 @@ public class touristProfile extends AppCompatActivity {
 
     private TextView tvName, tvEmail, tvContact, username, uemail;
     private EditText etName, etEmail, etPassword, etContact;
-    private ImageView image;
+    private ImageView image, backButton;
     private MaterialButton btnEdit, logOutbtn, btnProfileEdit;
     private Button saveChanges;
     private GridView bookingGridView;
@@ -78,6 +79,7 @@ public class touristProfile extends AppCompatActivity {
         tvEmail = findViewById(R.id.tv_email);
         username = findViewById(R.id.username);
         uemail = findViewById(R.id.email_usern);
+        backButton = findViewById(R.id.backButton);
         tvContact = findViewById(R.id.contact_947);
         image = findViewById(R.id.image);
         saveChanges = findViewById(R.id.saveChanges);
@@ -149,6 +151,20 @@ public class touristProfile extends AppCompatActivity {
                         Toast.makeText(touristProfile.this, "Error" + e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(touristProfile.this, touristMain.class);
+            startActivity(intent);
+            finish();
+
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Do nothing to disable back button
             }
         });
 

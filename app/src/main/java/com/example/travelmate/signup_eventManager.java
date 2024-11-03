@@ -100,8 +100,8 @@ public class signup_eventManager extends AppCompatActivity {
                     return;
                 }
 
-                if(uEmail.isEmpty()){
-                    userEmail.setError("Email is required");
+                if(uEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(uEmail).matches()){
+                    userEmail.setError("Valid Email is required");
                     return;
                 }
 
@@ -127,10 +127,19 @@ public class signup_eventManager extends AppCompatActivity {
 
                 if(uPhone.length() != 10){
                     mobileNo.setError("Enter Valid Telephone number");
+                    return;
                 }
 
-                if(uNicNo.isEmpty()) {
-                    nicNo.setError("NIC number is required");
+                if (uNicNo.isEmpty() || !(uNicNo.length() == 10 || uNicNo.length() == 12) || (uNicNo.length() == 10 && !uNicNo.matches(".*[VXvx]$"))) {
+                    if (uNicNo.isEmpty()) {
+                        nicNo.setError("NIC number is required");
+                    } else if (!(uNicNo.length() == 10 || uNicNo.length() == 12)) {
+                        nicNo.setError("NIC number does not contain valid character count");
+                    } else if (uNicNo.length() == 10 && !uNicNo.matches(".*[VXvx]$")) {
+                        nicNo.setError("Last character should changed with 'V' or 'X'");
+                    } else if (uNicNo.length() == 9 ) {
+                        nicNo.setError("Your NIC number should end with 'V' or 'X'");
+                    }
                     return;
                 }
 
@@ -224,7 +233,7 @@ public class signup_eventManager extends AppCompatActivity {
 
 
     private void uploadProfileImage(String userID) {
-        final StorageReference profileImageRef = storageReference.child("TouristGuide/" + userID  + "/profilePicture.jpg");
+        final StorageReference profileImageRef = storageReference.child("EventManager/" + userID  + "/profilePicture.jpg");
         profileImageRef.putFile(profileimg).addOnSuccessListener(taskSnapshot -> {
             profileImageRef.getDownloadUrl().addOnSuccessListener(profileImageUrl -> {
                 uploadNicBackImage(userID, profileImageUrl.toString());
@@ -236,7 +245,7 @@ public class signup_eventManager extends AppCompatActivity {
     }
 
     private void uploadNicBackImage(String userID, String profileImageUrl) {
-        final StorageReference nicBackRef = storageReference.child("TouristGuide/" + userID + "/licenseImage.jpg");
+        final StorageReference nicBackRef = storageReference.child("EventManager/" + userID + "/nicBack.jpg");
         nicBackRef.putFile(nicBackImg).addOnSuccessListener(taskSnapshot -> {
             nicBackRef.getDownloadUrl().addOnSuccessListener(nicBackImageUrl -> {
                 uploadNicFrontImage(userID, profileImageUrl, nicBackImageUrl.toString());
@@ -248,7 +257,7 @@ public class signup_eventManager extends AppCompatActivity {
     }
 
     private void uploadNicFrontImage(String userID,String profileImageUrl, String nicBackImageUrl) {
-        final StorageReference nicFrontRef = storageReference.child("TouristGuide/" + userID + "/licenseImage.jpg");
+        final StorageReference nicFrontRef = storageReference.child("EventManager/" + userID + "/nicFront.jpg");
         nicFrontRef.putFile(nicBackImg).addOnSuccessListener(taskSnapshot -> {
             nicFrontRef.getDownloadUrl().addOnSuccessListener(nicFrontImageUrl -> {
                 uploadProfileData(userID, profileImageUrl, nicBackImageUrl ,nicFrontImageUrl.toString());

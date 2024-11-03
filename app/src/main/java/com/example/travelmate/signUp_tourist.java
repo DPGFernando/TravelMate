@@ -94,7 +94,7 @@ public class signUp_tourist extends AppCompatActivity {
                     return;
                 }
 
-                if(uEmail.isEmpty()){
+                if(uEmail.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(uEmail).matches()){
                     Email.setError("Email is required");
                     return;
                 }

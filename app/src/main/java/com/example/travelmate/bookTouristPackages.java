@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,7 +47,7 @@ import java.util.Map;
 public class bookTouristPackages extends AppCompatActivity {
 
     TextView packageTitle, packageDes, packagePrice, packageDays;
-    ImageView packageImage;
+    ImageView packageImage, backButton;
     StorageReference storageReference;
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
@@ -68,6 +69,7 @@ public class bookTouristPackages extends AppCompatActivity {
         Log.d("touristId", touristId);
 
         packageTitle = findViewById(R.id.packageTitle);
+        backButton = findViewById(R.id.backButton);
         packageDes = findViewById(R.id.packageDes);
         packagePrice = findViewById(R.id.packagePrice);
         packageDays = findViewById(R.id.packageDays);
@@ -112,6 +114,19 @@ public class bookTouristPackages extends AppCompatActivity {
                 intent.putExtra("packageId", packageId);
                 intent.putExtra("touristId", touristId);
                 startActivity(intent);
+            }
+        });
+
+        backButton.setOnClickListener(view -> {
+            Intent intent = new Intent(bookTouristPackages.this, touristMain.class);
+            startActivity(intent);
+            finish(); // Close the current activity
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Do nothing to disable back button
             }
         });
 

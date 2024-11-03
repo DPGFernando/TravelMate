@@ -17,6 +17,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -47,7 +48,7 @@ public class TouristGuideProfile extends AppCompatActivity {
 
     private TextView tvName, tvEmail, tvContact, username, uemail ;
     private EditText etName, etEmail, etPassword, etContact;
-    private ImageView image;
+    private ImageView image, backButton;
     private MaterialButton btnEdit, logOutbtn,btnProfileEdit;
     private Button saveChanges;
     private List<Reviews> reviewList;
@@ -75,6 +76,7 @@ public class TouristGuideProfile extends AppCompatActivity {
         username = findViewById(R.id.username);
         uemail = findViewById(R.id.email_usern);
         tvContact = findViewById(R.id.contact_947);
+        backButton = findViewById(R.id.backButton);
         image = findViewById(R.id.image);
 
         btnEdit = findViewById(R.id.pen);
@@ -143,6 +145,20 @@ public class TouristGuideProfile extends AppCompatActivity {
                         Toast.makeText(TouristGuideProfile.this, "Error" + e.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
+            }
+        });
+
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(TouristGuideProfile.this, touristGuideMain.class);
+            startActivity(intent);
+            finish();
+
+        });
+
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Do nothing to disable back button
             }
         });
     }

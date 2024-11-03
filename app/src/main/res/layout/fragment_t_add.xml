@@ -92,7 +92,7 @@
                     android:id="@+id/price"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:hint="Price"
+                    android:hint="Price (Enter price in $)"
                     android:inputType="numberDecimal"
                     android:textColorHint="#000000" />
 
