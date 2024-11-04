@@ -204,7 +204,7 @@ public class ContactFragment extends Fragment {
                     if (task.isSuccessful() && !task.getResult().isEmpty()) {
                         DocumentSnapshot firstDoc = task.getResult().getDocuments().get(0);
                         String contact = firstDoc.getString(selectedCategory);
-                        textPlace.setText("Place: " + selectedDistrict);
+                        textPlace.setText("District: " + selectedDistrict);
                         textLocation.setText("Location: " + selectedCity);
                         textCategory.setText("Category: " + selectedCategory);
                         textContact.setText("Contact: " + contact);
